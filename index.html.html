@@ -1,0 +1,2024 @@
+<html class="scroll-smooth" lang="id">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   SMAN 2 CIKARANG SELATAN - Aplikasi Absensi Digital
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+    font-family: 'Poppins', sans-serif;
+  }
+  /* Scrollbar for sidebar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #a0aec0;
+    border-radius: 3px;
+  }
+  </style>
+ </head>
+ <body class="bg-gray-50 min-h-screen flex flex-col">
+  <div class="flex flex-col flex-grow" id="app">
+   <!-- LOGIN PAGE -->
+   <div class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-tr from-blue-600 to-indigo-700 px-4" id="login-page">
+    <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-8">
+     <h1 class="text-3xl font-semibold text-center text-indigo-700 mb-6">
+      SMAN 2 CIKARANG SELATAN
+     </h1>
+     <h2 class="text-xl font-semibold text-center mb-8 text-gray-700">
+      Login Aplikasi Absensi Digital
+     </h2>
+     <form autocomplete="off" class="space-y-6" id="login-form">
+      <div>
+       <label class="block text-gray-700 font-medium mb-1" for="username">
+        Username
+       </label>
+       <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="username" name="username" required="" type="text"/>
+      </div>
+      <div>
+       <label class="block text-gray-700 font-medium mb-1" for="password">
+        Password
+       </label>
+       <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="password" name="password" required="" type="password"/>
+      </div>
+      <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-md transition" type="submit">
+       Masuk
+      </button>
+     </form>
+     <p class="mt-4 text-center text-gray-600 text-sm">
+      Gunakan username dan password yang sesuai.
+     </p>
+    </div>
+   </div>
+   <!-- ADMIN DASHBOARD -->
+   <div class="hidden flex flex-col min-h-screen bg-gray-100" id="admin-dashboard">
+    <header class="bg-indigo-700 text-white flex items-center justify-between px-6 py-4 shadow-md sticky top-0 z-30">
+     <h1 class="text-xl font-semibold">
+      Dashboard Admin - SMAN 2 CIKARANG SELATAN
+     </h1>
+     <button class="hover:bg-indigo-600 px-3 py-1 rounded-md transition" id="admin-logout-btn">
+      <i class="fas fa-sign-out-alt mr-2">
+      </i>
+      Keluar
+     </button>
+    </header>
+    <div class="flex flex-grow overflow-hidden">
+     <nav class="bg-white w-64 border-r border-gray-300 flex flex-col overflow-y-auto" id="admin-sidebar">
+      <div class="p-6 flex flex-col items-center border-b border-gray-300">
+       <img alt="Foto profil admin dengan latar belakang biru dan wajah pria dewasa tersenyum mengenakan kemeja putih" class="rounded-full w-24 h-24 object-cover mb-3" height="100" id="admin-profile-pic" src="https://storage.googleapis.com/a1aa/image/9e5623a8-601b-4e9f-3091-820e29f45c7d.jpg" width="100"/>
+       <p class="font-semibold text-lg text-indigo-700" id="admin-username-display">
+        admin
+       </p>
+      </div>
+      <ul class="flex flex-col mt-4 space-y-1 px-4">
+       <li>
+        <button class="admin-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-admin-tab="profile">
+         <i class="fas fa-user-cog">
+         </i>
+         Profil
+        </button>
+       </li>
+       <li>
+        <button class="admin-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-admin-tab="daftar-hadir">
+         <i class="fas fa-list-check">
+         </i>
+         Daftar Hadir Siswa
+        </button>
+       </li>
+       <li>
+        <button class="admin-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-admin-tab="penugasan">
+         <i class="fas fa-tasks">
+         </i>
+         Penugasan
+        </button>
+       </li>
+       <li>
+        <button class="admin-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-admin-tab="penilaian-penugasan">
+         <i class="fas fa-clipboard-check">
+         </i>
+         Pengecekan Penilaian Penugasan
+        </button>
+       </li>
+       <li>
+        <button class="admin-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-admin-tab="pengecekan-daftar-hadir">
+         <i class="fas fa-file-alt">
+         </i>
+         Pengecekan Daftar Hadir
+        </button>
+       </li>
+       <li>
+        <button class="admin-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-admin-tab="ulangan-harian">
+         <i class="fas fa-pencil-alt">
+         </i>
+         Ulangan Harian
+        </button>
+       </li>
+       <li>
+        <button class="admin-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-admin-tab="nilai-penugasan">
+         <i class="fas fa-chart-bar">
+         </i>
+         Nilai Penugasan
+        </button>
+       </li>
+       <li>
+        <button class="admin-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-admin-tab="jumlah-nilai">
+         <i class="fas fa-calculator">
+         </i>
+         Jumlah Nilai
+        </button>
+       </li>
+      </ul>
+     </nav>
+     <main class="flex-grow overflow-y-auto p-6 bg-gray-50" id="admin-main-content">
+      <!-- Admin content will be injected here -->
+     </main>
+    </div>
+   </div>
+   <!-- SISWA DASHBOARD -->
+   <div class="hidden flex flex-col min-h-screen bg-gray-100" id="siswa-dashboard">
+    <header class="bg-indigo-700 text-white flex items-center justify-between px-6 py-4 shadow-md sticky top-0 z-30">
+     <h1 class="text-xl font-semibold">
+      Dashboard Siswa - SMAN 2 CIKARANG SELATAN
+     </h1>
+     <button class="hover:bg-indigo-600 px-3 py-1 rounded-md transition" id="siswa-logout-btn">
+      <i class="fas fa-sign-out-alt mr-2">
+      </i>
+      Keluar
+     </button>
+    </header>
+    <div class="flex flex-grow overflow-hidden">
+     <nav class="bg-white w-64 border-r border-gray-300 flex flex-col overflow-y-auto" id="siswa-sidebar">
+      <div class="p-6 flex flex-col items-center border-b border-gray-300">
+       <img alt="Foto profil siswa dengan latar belakang biru muda dan wajah remaja tersenyum mengenakan seragam sekolah putih" class="rounded-full w-24 h-24 object-cover mb-3" height="100" id="siswa-profile-pic" src="https://storage.googleapis.com/a1aa/image/b111e926-f5e5-4f59-8850-bc942f29cad6.jpg" width="100"/>
+       <p class="font-semibold text-lg text-indigo-700" id="siswa-username-display">
+        Nama Siswa
+       </p>
+      </div>
+      <ul class="flex flex-col mt-4 space-y-1 px-4">
+       <li>
+        <button class="siswa-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-siswa-tab="profile">
+         <i class="fas fa-user-cog">
+         </i>
+         Profil
+        </button>
+       </li>
+       <li>
+        <button class="siswa-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-siswa-tab="penugasan">
+         <i class="fas fa-tasks">
+         </i>
+         Penugasan
+        </button>
+       </li>
+       <li>
+        <button class="siswa-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-siswa-tab="ulangan-harian">
+         <i class="fas fa-pencil-alt">
+         </i>
+         Ulangan Harian
+        </button>
+       </li>
+       <li>
+        <button class="siswa-tab-btn w-full text-left px-3 py-2 rounded-md hover:bg-indigo-100 transition flex items-center gap-2" data-siswa-tab="pengecekan-tugas">
+         <i class="fas fa-clipboard-list">
+         </i>
+         Pengecekan Tugas
+        </button>
+       </li>
+      </ul>
+     </nav>
+     <main class="flex-grow overflow-y-auto p-6 bg-gray-50" id="siswa-main-content">
+      <!-- Siswa content will be injected here -->
+     </main>
+    </div>
+   </div>
+   <script>
+    (() => {
+  // Data: Siswa per kelas
+  const siswaData = {
+    "X.1": [
+      "ABHINAYA NANDA PRAYOGA",
+      "ABUL A'LA AL-MAUDUDI",
+      "AFIFA ZHAHROH",
+      "TUNNISA",
+      "AIRANAYA DE",
+      "ASYAEFASARI",
+      "ANDINI RACHYL",
+      "FRIDELIA",
+      "ANJANI SHEVA ALYA",
+      "ARRUMI NASYWAA",
+      "ANJANI",
+      "ASSYIFA NUR QOLBY MUSTOPA",
+      "A'SYIFA PUTRI SALSABILA",
+      "ATIKA KHAIRUNNISA",
+      "AURA NIMASAYU PRAMESWARI",
+      "BILQIS SAFIRA NISRINA NISYAH",
+      "BUNGA NUR VITASARI",
+      "CARISSA SALSABILA",
+      "CHELSEA VANESSA NAULI LUMBAN TOBING",
+      "DARA INDHIRA",
+      "DEVANIA ANGGITA SETIAWAN",
+      "DIMAS CAHYA AINA",
+      "MAYYASYA",
+      "FAIZA ALIYA AZIZAH",
+      "HAFIZAH JUWITA",
+      "HYLMI CLEARESTA",
+      "ILHAM MUSTAKIM",
+      "ILHAM RIZKI MAULANI",
+      "JASMINE CHALISA",
+      "JESSICA REVITA MARITO MANALU",
+      "KESYA AMANDA",
+      "CANTIKA PUTRI",
+      "KIRANA CAHYA AYU SESTIYAN",
+      "KUZAMA NAUFA BILQIST",
+      "LILA FATIMAH AZZAHROH",
+      "LUBNA IFTINAH SAKHI",
+      "MAURA CICELIA AMIRA",
+      "PUTRI",
+      "MUHAMMAD AL FATIH",
+      "NAKEISHA SAKHI",
+      "MAHESWARI",
+      "NAURA HASNA",
+      "SALSABILA",
+      "NIHAYATUL AINA WIJAYA",
+      "NURUL AULIYA PUTRI",
+      "PANJI SAFA ALZENA",
+      "POPPY HERAWATI",
+      "PUTRI RINZANI",
+      "RAFA BHIMA SAKTI",
+      "SABRINA JIHAN ASRORI",
+      "SIMPLISIUS BENEDICT SAPTOHARGO",
+      "SITI MUSHONIFAH",
+      "SYALWA REZKYA ANDINI",
+      "SYIFA NURAENI",
+      "VINI HERVIKA RANI"
+    ],
+    "X.2": [
+      "AGNES KRISTINA SILAEN",
+      "AISYA FIRYAL",
+      "NARESWARI",
+      "AL GHANY SAGARA PUTRA",
+      "ALMIRA HANA SAUSAN",
+      "ALWAN HANIF MUZAKKI",
+      "ANDRA RIZKY MAULANA",
+      "AQILA FEBTYNA RYCHA",
+      "ARDITYA FAIZI",
+      "ARVIN AIDAN GHULFANI",
+      "AURIELLIA ZABRINA WINDA SANTONI",
+      "AYUNING ASMARANDANA",
+      "CHANSA SINAR NABILAH",
+      "INDRIANTO",
+      "DEWI NURUL HIDAYAH KUSUMA",
+      "DIMAS FIRGIAWAN AKBAR",
+      "EILEN ZHALFA MEIZURA",
+      "ENESIA GAVIOTA GRISELDIS",
+      "FENI MARSYADA FITRI",
+      "GANDHINI RANI RAMADHANI",
+      "HASAN ROID RAIHAN",
+      "KALEA GARWITA LUQMONO",
+      "KHANSA ALIFA MUMTAZ",
+      "KHARISMA CAHYA UTAMI HATTA",
+      "LIZZA MIFTAHUL",
+      "JANNAH",
+      "LUTFIYAH AFIFAH SITI SALAMAH",
+      "MARON RAFADILLA YOGA PRATAMA",
+      "MEISYA AQILA PUTRI",
+      "MUFIDA AZKA ANDINNY",
+      "MUHAMMAD AL-FARABY",
+      "NABILA AULIA KHANZA",
+      "NAIFA FARAH",
+      "NAUFAL MURTADHO",
+      "NAZWA ANAYA PUTRI",
+      "QANISA RAIDATUL",
+      "DAWAMAH",
+      "QIANDRA ADILLA",
+      "HARQA",
+      "RIFA AL FAIRUZ",
+      "SAFA AIRA",
+      "WINDHYASTUTI",
+      "SHAFA DHIYA ASHOLAH",
+      "SHAFIRA AULIA PUTRI",
+      "SHARON CHRISSANTY",
+      "SOFIA KEYZA AMELIA",
+      "TSAMARA UFAIRAHAZKA",
+      "VANESSA WILICIAN",
+      "VIONA ALMA VALENCIA",
+      "YOSUA ADISYAPUTRA",
+      "SIMBOLON",
+      "ZAHRA NURHISMARLISA",
+      "ZALFA'A KHAIRUNNISA"
+    ],
+    "X.3": [
+      "ADELINA AZRINA PUTRI",
+      "AFIYAH",
+      "AHMAD SUGALI",
+      "ANDREA AULIA",
+      "RAHMAN",
+      "APRIL LIA",
+      "AULIA RISQI ANANDA",
+      "AUREL SYAH DWICAHYA",
+      "AZKA SALMA KHAIRUNNISA",
+      "DESTRIAFI PUTRI LUNGGANI",
+      "DEWI ESHA FITRIA KHAIRUNNISA",
+      "DIANA JULIANTI",
+      "EL RASYID RAMADHAN",
+      "EZRA FAIQ MUHIB",
+      "FAISAL ARIFIN RASYID",
+      "GANDHINI RANA RAMADHANI",
+      "GULTOM,EZRA NOVAULI",
+      "KENZIE NAUFAL",
+      "DZACKY",
+      "LISA INDRIYANI",
+      "LUTHFI NURAINI",
+      "M. FATIH AKBAR",
+      "MAHESA NARARYA",
+      "FAHROZHI",
+      "MEIKEL BEREMA TARIGAN",
+      "MEILYSA ANIS UTAMI",
+      "MEISYA AZKA NUR",
+      "MISCEL QIARAMADHANI",
+      "GUNAWAN",
+      "MUHAMMAD DAFFA RIZQULLAH LIANSYAH",
+      "NABILA OFIE NUGROHO",
+      "NADIA ALMIRA RAHMA",
+      "NAFLA ARUMNI",
+      "NAISYA VIRLYA PUTRI",
+      "NATASYA ADELIA PUTRI",
+      "NAURA NADHIFA",
+      "NESTRI ISTIQOMAH",
+      "PUTRI RAHMA RASWANI",
+      "RAISHA YURA",
+      "RAISYA RAINA ANINDITA",
+      "RATU EVELINE GHEA CHAMPAKA",
+      "REHAN PERMANA",
+      "REIZELL AYU",
+      "NURSEHAN",
+      "SALSA WAHYUNI SAFITRI",
+      "SATRIA BENAYA",
+      "SHERIN NINDYA PUTRI",
+      "SHOFIE PUTRI NOVIANI",
+      "SOPYAN",
+      "TRISNA SUKENDA",
+      "VEDA RAISSA",
+      "SASIKIRANA",
+      "YESSICA INDKA HEPHZY"
+    ],
+    "X.4": [
+      "ADINDA DISYA",
+      "NURRAHMA",
+      "ADWA LAILATUL FITRIA",
+      "AMIRA ZHARRIFA ULFAH",
+      "ANASYA NANDA INESTA",
+      "ANINDYA ZAHRA",
+      "NAISYA BUDIMAN",
+      "ARVEL NALA PUTRA",
+      "ATTILA DZAKI CHUMAIDI",
+      "AULIA NADINE RAMDHANTI",
+      "AURA AURELIA",
+      "AURYN AMANDA GUSTI",
+      "AZIEZIELA ANGGRAENI",
+      "AZKA ZAFIRA",
+      "BARNES MIROSLAV",
+      "KLOSE DAELI",
+      "CHERYL DEBORA THERSYA SIREGAR",
+      "DAFFA HAMIZAN HAMZAH",
+      "DAVI REFANSYAH",
+      "DENY FRANATA SIMARMATA",
+      "EKA LAELATUL",
+      "ROHMAH",
+      "FAISYAH NOVINDA SALSA BILLA",
+      "FAYZA KAMILA PUTRI",
+      "GILANG ADRIANSYAH",
+      "HELLEN NIA NAZWA SALSABILA",
+      "INGGRID FITRIA RAMADHANI",
+      "JEHAN MYIESHA",
+      "KHALISA AULIA NURCAHYANI",
+      "MANDA SYARIFAH",
+      "FAUSTINA",
+      "MEYLIANI ADIRIYANTI",
+      "MUHAMAD FIQRI",
+      "MUHAMMAD NAFIS ATHALLAH",
+      "NADIYAH AVRILIA",
+      "NURRAHAYU",
+      "NAJWA CAHYANI PUTRI",
+      "NAMIRA AULIA PUTRI",
+      "NAYLA SABILA ALFATUNNISA",
+      "NAZWA KHOIRUNNISA",
+      "PUTRI ADELIA",
+      "RADITHYA JAVAS AL-HAKIM",
+      "RAFA RAMADHANI",
+      "REY RENE COTTIN",
+      "RHENATA ABELIANA PUTRI",
+      "SALMA PUTRI ZAHRA",
+      "SINTA PUSPITA RAHMAWATI",
+      "SOFIA RAHADATUL",
+      "AISYAH",
+      "SYAHLAH NAJWA PUTRI",
+      "SYAVIRA DINDA AGUSTHIA",
+      "TIARA NASYWA",
+      "HERABILAH",
+      "TIFANY PUTRI SYAHBAN BUMULO"
+    ],
+    "X.5": [
+      "ADHISTA NAZWA APRILLIA PUTRI",
+      "ADRIAN AZHAR PRIYATAMA",
+      "AISYAH NURUL WAHAB",
+      "AIZU KLARINTA",
+      "AJENG YUSTISIA",
+      "NINGSIH",
+      "ALIFIA HASNA INDRAYANI",
+      "ALMAHIRA KIREI NA PUTRI",
+      "ALMIRA SHARLIZ LAIQA",
+      "ANINDYA NADHIFAH PUTRI",
+      "ANISA DWI ESTANTI",
+      "APRILIA KUMALA NANDA",
+      "AUFHA APRILLYA ANGGARA",
+      "DAFIT AJRIL RAMDANI",
+      "DEANDRA ANINDY",
+      "PRATAMA",
+      "DENISYA PUTRI",
+      "DWI NUR FEBRIYANTI",
+      "EDO PUTRA WINATA",
+      "ELVIANY ERISSA PUTRI",
+      "FAKHRIE AHMAD NUR RIFQI",
+      "FIRYAL NURKAMILAH",
+      "GALANG RISANG",
+      "PAWEKAS",
+      "GISELLA GITAFREYA NADIA PUTRI",
+      "HANA SYIFA JABALLAH",
+      "HILMA ABELIA",
+      "HUSAIN ROIF RAIHAN",
+      "JOSHUA MANUEL PRATAMA",
+      "KARISA MAWARNI",
+      "KHOIRIL NOOR ANWAR",
+      "LINTANG GHINA KHAIRUNNISA",
+      "MUHAMMAD HUSAIN",
+      "NADHISYA ALIYYA ZHAFIER",
+      "NAKESYHA PUTRI CUTE",
+      "NAUFAL HIDAYAT",
+      "NAYRA ADILA EVELIN",
+      "PUDJA PUTI SUGAMA",
+      "QUINNSHA AHZA KIRANI",
+      "RAIN AIMULA",
+      "MIRAHAYU",
+      "RASYA FATHUL ISLAMI",
+      "RESHIA KELSHA ILFA",
+      "SABRINA AURELIA PUTRI",
+      "SIHITE, EXAUDI SAMSER DARYLSON",
+      "VIDIA KHAERUNISA",
+      "YANTI APRIYANI",
+      "YOHANA GULTOM",
+      "YUNISA ARYANI",
+      "ZALWA AURELIA",
+      "SYAFIRA"
+    ],
+    "X.6": [
+      "AFIFA AILATU WIAM",
+      "AFMILA DINI ALFIRSYA",
+      "AISYAH",
+      "AISYAH PUTRI RAHMAWATI",
+      "ALVINO FAADHIL PRATAMA",
+      "ASTI SETYA MUKTI",
+      "ATAYA TSANI DIYYAUL HAQ",
+      "ATHA RIFQI RAMADHANI LUBIS",
+      "AZKIYA ISLAMI",
+      "MAULINA RAVA",
+      "BAGAS FIRMANSYAH",
+      "DAFA ALMER DZAKY",
+      "DESQYA ADILLA SYAIRA",
+      "EKA ANDIN SASKIA WATI",
+      "FANESYA KHUSNA NIDAUL JANNAH",
+      "FATIMAH SHIFA MAULIDYA",
+      "FEBI ROSA HARIANJA",
+      "FERDELA EKA PUTRI",
+      "HANIDA KAILANI",
+      "IKRAM FATA NUGRAHA",
+      "JIHAN JAUZIYAH NURDANI",
+      "JOSEP VALENTINO",
+      "SIHOTANG",
+      "KAYLA DEBY VICTORIA BRIGHT WIBISONO",
+      "KEYSHA DWI INSANI",
+      "KHANSA RINDU",
+      "ISKANDAR",
+      "KHEYZIA AQILA MUMTAZ",
+      "LISA LISMAWATI",
+      "MOETHIA NOOR",
+      "FAUZIAH",
+      "MUHAMMAD RAZAAN AQIL RAFAT",
+      "NAAILAH NUUR AFFIAH",
+      "NADHIF ADIS RAZIQ FAIRUZ",
+      "NADIA PUTRI ERINA ARTANTI",
+      "NADIYAH KHAIRIYAH",
+      "NAINA RAISATUL AZKIYAH",
+      "NAJMI TSURAYA",
+      "NAOMI REGITA GULO",
+      "NAURA HIMMA",
+      "KHAIRUJANNAH",
+      "OKTAVIAN FERNANDO",
+      "LUBIS",
+      "RAIHANA SHAFA KAMILA",
+      "SAFWANA SHARLIZ",
+      "VALEDA",
+      "SALMA NUR AZIZAH",
+      "SEKAR LINTANGFLOWRIAN",
+      "SYAFA NURUL",
+      "RAHMAWATI",
+      "VERLITA CHERYLIA",
+      "ANGELY KHARISMA",
+      "VIANA ALIFHA DAMAYANTI"
+    ],
+    "X.7": [
+      "AHZAHRA ECHA ARDINI",
+      "AINUL HUSNA",
+      "AISYAH BILQIS AZZAHRA",
+      "AQILLA RAHMADANY",
+      "ASKIA ZAHRA JULIANIS",
+      "AULIA AYU DESFIANTI",
+      "AZKYA SALSABILLA PUTRI",
+      "BALQIS ATHIFAH NASYWAH ASYAWI",
+      "BANU TRI WICAKSONO",
+      "CHELSEA AULIA",
+      "CLARA IVANA SIREGAR",
+      "FAARIS TIKO",
+      "NOORSETYO",
+      "FATIMAH IZZATUNNISSA",
+      "FAUZIYYAH AYU FITRIANI",
+      "FAYA ARDILA JUNIKA SARI",
+      "GATHAN ARAFAT AL",
+      "FAIRUZ",
+      "GRACE DENATALIE DEWI",
+      "HAIDAR ATHALLAH SAFRUDIN",
+      "IBRAHIMMOVIC AL KAUTSAR",
+      "INDRA SETIAWAN",
+      "JASEN IMANUEL",
+      "ISKANDAR",
+      "JUANITA ISNAINNUR KHAIRANI",
+      "KHESYA GUNA APRILIA",
+      "KYLA DWI SAPUTRI",
+      "LILIN PUTRI",
+      "PRAMESWARI",
+      "LINTANG ARUMI",
+      "MUTIARA NOVATINI",
+      "NABILA NUR SAFITRI",
+      "NAGITA AGUSTIANI",
+      "NASSYFA MAHARANI",
+      "NAUVIL MA'RUFAH",
+      "NAYCHILA ARDITA",
+      "NAYLA SYAFIRA NURAISYAH",
+      "NAZWA RAHMALIA",
+      "NIAR RACHMA ARYANI",
+      "NURHASANAH AISYAH PUTRI PASARIBU",
+      "RAYHAN EZAR PAHLEVI",
+      "RAYHAN RYSZARD",
+      "BAYANAKA",
+      "REZKY ABDI PRATAMA",
+      "RIFAYA AZKANIA AZURA",
+      "RIZQI TAMA HELAUDINATA",
+      "SEIRA JUNIAR",
+      "VANESA CINTA",
+      "ALKHALIFIA",
+      "VIRGA SATYA AZMI",
+      "WINDY CLEARINE ELYSIA",
+      "ZIVANA NASHIERA",
+      "SALSABILA"
+    ],
+    "X.8": [
+      "AKILA SARAH",
+      "LISMAWATI",
+      "ALIYAH ISNANI SALAMAH",
+      "ANINDITA PUJIRESTUTI",
+      "ATIKAH SEPTIYANINGSIH",
+      "AYRABELLA KENZABRINA PUTRI",
+      "AZALIA TIARA CLORINDA LUBIS",
+      "BIMA ARYA ALGHIFARI",
+      "EZKI BELVA HIDAYAT",
+      "FABYAN DZAKY",
+      "HARINATA",
+      "FADYA JAMIL ANNINDA",
+      "FARHAH NABILLA ANWAR",
+      "FERLITA PUTRI KEYSHA",
+      "FRIZKA ALIFVIA",
+      "HANIF ADLAN AL AUFA",
+      "HANINDYA RAHMA SETIAWAN PUTRI",
+      "HISANAH NUHA'A",
+      "IBRAHIM OVICH PUTRA WIBISONO",
+      "KAYYASAH CAHAYA",
+      "IRAWAN",
+      "KEYRANISSA AQSHIFA",
+      "KEYTANIA SIAHAAN",
+      "MARITZA RAFA SUTOPO",
+      "MAULIDIA PUTRI",
+      "MAY RAHAYU SETIANINGSIH",
+      "MUHAMAD ILHAM ARIFIN",
+      "MUHAMMAD RAFI AL HASAN",
+      "MUHAMMAD RAZEL",
+      "ALFA TOURINO",
+      "MUHAMMAD ZAKI FAHRURROZI",
+      "MUTIA RATU RUMAISHA",
+      "NABILA AZKYA ZAFIRA",
+      "NADIRA IZZANIL FALAH",
+      "NAZWA AZ ZAHRA",
+      "GUSNA",
+      "PUTRI ZAHRA TUSITA",
+      "RASYA NURHADI",
+      "REGINA AZZAHRA PUTRI IRWANSYAH",
+      "REIKO RAKHA HADYAN",
+      "RIBKA RULINTANG",
+      "SITANGGANG",
+      "RIZMA RAMADINAH",
+      "SADRINA AURA",
+      "SAFA FITRIANSYAH",
+      "SAFAA AURELLIA PUTRI",
+      "SHAFINA RAISSA HELGA",
+      "SITI NOERLATIFAH",
+      "SOFIAYA TUNNISA",
+      "YUSSI LETISHA",
+      "AVRILLIANY"
+    ],
+    "X.9": [
+      "AISIYAH RAHMA KHAIRUNNISA",
+      "AISYA EVELINA FITRI",
+      "ALIKA AZALEA",
+      "CHALISTA",
+      "ALYA PUTRI",
+      "AMARA AULIA PUTRI",
+      "RAHMADHANI",
+      "ARKAN SYIHABUDDIN",
+      "AYYASI",
+      "ATHIYATUL BASITH",
+      "AVRILIANO KUMARA YOSI",
+      "CIO DHARMANSYAH SUMODIMEDJO",
+      "EMMANUELLA NAFTALI AUREL PUTRI",
+      "ESA NAUFAL ALFARIZI",
+      "FARADILA ISNAINI",
+      "FELICIA ARDIN PUTRI",
+      "FITRI NUR AENI",
+      "GILANG ALBAR ADZANI",
+      "HANIF SALIQ LUTHFI",
+      "HAKIM",
+      "IBRAHIM ANAND HUSEIN",
+      "IMELDA CHIKITA BELLA",
+      "INTANA RIZKYA",
+      "MAULIDA",
+      "JEREMY SEBASTIAN",
+      "JESSICA AGUSTIN",
+      "KAMILA HANIF",
+      "KANYA GAMAYANTI",
+      "MACIKA KAINDRA DIANTI",
+      "MUHAMMAD RAIHAN AGHA MUZAKKI",
+      "MUTIARA ZAHRANY",
+      "SUSILO",
+      "NAJMAH NAILA MUFIDAH HANIN",
+      "NAZZWA AURA PUTRI",
+      "PERMANA",
+      "NEISHA FITRIA RAMADHANI",
+      "PRAJNA PARAMITHA FAUZIA",
+      "RAYI AQILA FAJARANI",
+      "RICHA ANGELIA NOVISHA",
+      "RIFKA EUNIKE MANIK",
+      "RISVI ZAHRIYA HUSNA",
+      "RYO ZULYAN",
+      "SARDI FADHLURAHMAN",
+      "SITI NURALIYAH",
+      "SYAFIRA MITHA AULIA",
+      "HAMZAH",
+      "THERY AMALIA NURUL HIDAYAH",
+      "UBAYDDILLAH AKBAR MAULANA"
+    ],
+    "X.10": [
+      "AISYAH AZZAHRA ALTARIZKI",
+      "ALVIANA PUTRI",
+      "HIDAYAH",
+      "ALYSIA LUCITA SABRINA",
+      "APRILIA ADINDA PUTRI",
+      "AURA FAHMYTA",
+      "AURALLYA NATHANIA RAMDHANI",
+      "AUREL ZAHRA",
+      "AWLIYA AUFA RAMDANI",
+      "AYU FEBRI FADILAH",
+      "AZRIEL ASSHAFI PRATAMA",
+      "BAGUS ALDRIAN SIMBOLON",
+      "BRINETTE CATARISSA SIMANJUNTAK",
+      "BRISHNA ARKAPUTRA",
+      "CHERYLLEA GEITSA",
+      "ASHAFA",
+      "DAVA REFANO RAMDANI",
+      "DEASY ANGGITA NUGRAHENI",
+      "EKI ARIESTIA PUTRI",
+      "ERVINA ERVIAN THEN",
+      "FALAH EVAN JAVARANO",
+      "FRISKA AMELIA",
+      "HAFIZH ALFARISI MUBAROK",
+      "HAIFA AULIA AZZAHRA",
+      "INDRI ADELIA AGUSTINA",
+      "KAIRANI ALDINA KHAIRUNNISA",
+      "KHALISYA NUR",
+      "KHASANAH",
+      "MUHAMMAD EL-BAASITH MUSTHOFA",
+      "NAILA FARIZ",
+      "NAUFAL MUKHLAR PRAYITNO",
+      "NAURA KANAYYA PUTRI",
+      "NAZWA ANDRYANA",
+      "NAZWA MUKTI FRATIWY",
+      "NUR HAFIZAH",
+      "OLIVIA PUTRI KHALISA",
+      "QORI DWI SYAHFIRA",
+      "QUEENSHA YONSI",
+      "APRILIANA",
+      "RADIAN DWI YANUARTO",
+      "RAFAEL RAYEN ALFERO",
+      "RAISYA APRILIA SIGIT",
+      "RIZKY MUBAROK",
+      "SALSABILA N P",
+      "SEKAR AYUNING NEGARI",
+      "SOFIA AFIFATUL",
+      "MUKHLISOH",
+      "STEVANY KATARINA",
+      "JEHAMAN",
+      "SYAKIRA KHAIRANI",
+      "WAHYU JATI",
+      "PAMUNGKAS",
+      "YAFFA SYIFANA",
+      "HASANUDIN"
+    ]
+  };
+
+  // User data: admin + siswa username/password
+  // Admin: username: admin, password: 123
+  // Siswa: username = nama siswa, password = 123
+  // We'll store profile pics, attendance, assignments, scores, etc in memory (simulate DB)
+  const users = {
+    admin: {
+      username: "admin",
+      password: "123",
+      profilePic: "https://placehold.co/100x100/png?text=Admin+Profile",
+      attendance: {}, // per date per siswa
+      assignments: [], // {id, title, description, files:[], submissions:{}}
+      penilaianPenugasan: {}, // {assignmentId: {username: score}}
+      ulanganHarian: [], // {id, question, options, answer, score}
+      nilaiPenugasan: {}, // {username: {assignmentId: score}}
+      jumlahNilai: {}, // {username: {penugasan: x, ulangan: y, total: z}}
+    }
+  };
+
+  // Add siswa users
+  for (const kelas in siswaData) {
+    siswaData[kelas].forEach((nama) => {
+      users[nama.toLowerCase()] = {
+        username: nama.toLowerCase(),
+        password: "123",
+        kelas,
+        profilePic: "https://placehold.co/100x100/png?text=Siswa+Profile",
+        attendance: {}, // {date: {alpa, izin, sakit, hadir}}
+        assignmentsSubmitted: {}, // {assignmentId: {files:[], submittedAt}}
+        ulanganHarianAnswers: {}, // {ulanganId: {answer, score}}
+      };
+    });
+  }
+
+  // Utility: format date to yyyy-mm-dd
+  function formatDate(date) {
+    return date.toISOString().split("T")[0];
+  }
+  // Utility: get day name in Indonesian
+  function getDayName(date) {
+    const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    return days[date.getDay()];
+  }
+  // Utility: get month name in Indonesian
+  function getMonthName(date) {
+    const months = [
+      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+    return months[date.getMonth()];
+  }
+
+  // Current logged in user
+  let currentUser = null;
+
+  // DOM references
+  const loginPage = document.getElementById("login-page");
+  const adminDashboard = document.getElementById("admin-dashboard");
+  const siswaDashboard = document.getElementById("siswa-dashboard");
+
+  const loginForm = document.getElementById("login-form");
+  const usernameInput = loginForm.username;
+  const passwordInput = loginForm.password;
+
+  // Admin elements
+  const adminLogoutBtn = document.getElementById("admin-logout-btn");
+  const adminProfilePic = document.getElementById("admin-profile-pic");
+  const adminUsernameDisplay = document.getElementById("admin-username-display");
+  const adminSidebar = document.getElementById("admin-sidebar");
+  const adminMainContent = document.getElementById("admin-main-content");
+
+  // Siswa elements
+  const siswaLogoutBtn = document.getElementById("siswa-logout-btn");
+  const siswaProfilePic = document.getElementById("siswa-profile-pic");
+  const siswaUsernameDisplay = document.getElementById("siswa-username-display");
+  const siswaSidebar = document.getElementById("siswa-sidebar");
+  const siswaMainContent = document.getElementById("siswa-main-content");
+
+  // Helper: clear main content
+  function clearMainContent(container) {
+    container.innerHTML = "";
+  }
+
+  // Helper: create element with classes and attributes
+  function createEl(tag, options = {}) {
+    const el = document.createElement(tag);
+    if (options.classes) el.className = options.classes;
+    if (options.attrs) {
+      for (const key in options.attrs) {
+        el.setAttribute(key, options.attrs[key]);
+      }
+    }
+    if (options.text) el.textContent = options.text;
+    if (options.html) el.innerHTML = options.html;
+    return el;
+  }
+
+  // Show login page
+  function showLogin() {
+    loginPage.classList.remove("hidden");
+    adminDashboard.classList.add("hidden");
+    siswaDashboard.classList.add("hidden");
+    usernameInput.value = "";
+    passwordInput.value = "";
+    currentUser = null;
+  }
+
+  // Show admin dashboard
+  function showAdminDashboard() {
+    loginPage.classList.add("hidden");
+    adminDashboard.classList.remove("hidden");
+    siswaDashboard.classList.add("hidden");
+    adminUsernameDisplay.textContent = currentUser.username;
+    adminProfilePic.src = currentUser.profilePic || "https://placehold.co/100x100/png?text=Admin+Profile";
+    loadAdminTab("profile");
+  }
+
+  // Show siswa dashboard
+  function showSiswaDashboard() {
+    loginPage.classList.add("hidden");
+    adminDashboard.classList.add("hidden");
+    siswaDashboard.classList.remove("hidden");
+    siswaUsernameDisplay.textContent = currentUser.username;
+    siswaProfilePic.src = currentUser.profilePic || "https://placehold.co/100x100/png?text=Siswa+Profile";
+    loadSiswaTab("profile");
+  }
+
+  // Login form submit handler
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const username = usernameInput.value.trim().toLowerCase();
+    const password = passwordInput.value.trim();
+    if (!users[username]) {
+      alert("Username tidak ditemukan.");
+      return;
+    }
+    if (users[username].password !== password) {
+      alert("Password salah.");
+      return;
+    }
+    currentUser = users[username];
+    if (username === "admin") {
+      showAdminDashboard();
+    } else {
+      showSiswaDashboard();
+    }
+  });
+
+  // Logout handlers
+  adminLogoutBtn.addEventListener("click", () => {
+    if (confirm("Apakah Anda yakin ingin keluar?")) {
+      showLogin();
+    }
+  });
+  siswaLogoutBtn.addEventListener("click", () => {
+    if (confirm("Apakah Anda yakin ingin keluar?")) {
+      showLogin();
+    }
+  });
+
+  // Admin sidebar tab buttons
+  adminSidebar.querySelectorAll(".admin-tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tab = btn.getAttribute("data-admin-tab");
+      loadAdminTab(tab);
+      // Highlight active
+      adminSidebar.querySelectorAll(".admin-tab-btn").forEach(b => b.classList.remove("bg-indigo-100", "font-semibold"));
+      btn.classList.add("bg-indigo-100", "font-semibold");
+    });
+  });
+
+  // Siswa sidebar tab buttons
+  siswaSidebar.querySelectorAll(".siswa-tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tab = btn.getAttribute("data-siswa-tab");
+      loadSiswaTab(tab);
+      // Highlight active
+      siswaSidebar.querySelectorAll(".siswa-tab-btn").forEach(b => b.classList.remove("bg-indigo-100", "font-semibold"));
+      btn.classList.add("bg-indigo-100", "font-semibold");
+    });
+  });
+
+  // Load admin tab content
+  function loadAdminTab(tab) {
+    clearMainContent(adminMainContent);
+    switch(tab) {
+      case "profile":
+        renderAdminProfile();
+        break;
+      case "daftar-hadir":
+        renderAdminDaftarHadir();
+        break;
+      case "penugasan":
+        renderAdminPenugasan();
+        break;
+      case "penilaian-penugasan":
+        renderAdminPenilaianPenugasan();
+        break;
+      case "pengecekan-daftar-hadir":
+        renderAdminPengecekanDaftarHadir();
+        break;
+      case "ulangan-harian":
+        renderAdminUlanganHarian();
+        break;
+      case "nilai-penugasan":
+        renderAdminNilaiPenugasan();
+        break;
+      case "jumlah-nilai":
+        renderAdminJumlahNilai();
+        break;
+      default:
+        adminMainContent.textContent = "Tab belum tersedia.";
+    }
+  }
+
+  // Load siswa tab content
+  function loadSiswaTab(tab) {
+    clearMainContent(siswaMainContent);
+    switch(tab) {
+      case "profile":
+        renderSiswaProfile();
+        break;
+      case "penugasan":
+        renderSiswaPenugasan();
+        break;
+      case "ulangan-harian":
+        renderSiswaUlanganHarian();
+        break;
+      case "pengecekan-tugas":
+        renderSiswaPengecekanTugas();
+        break;
+      default:
+        siswaMainContent.textContent = "Tab belum tersedia.";
+    }
+  }
+
+  // ========== ADMIN TABS ==========
+
+  // Admin Profile: change profile pic
+  function renderAdminProfile() {
+    const container = createEl("div", {classes:"max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md"});
+    const title = createEl("h2", {text:"Profil Admin", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    const imgWrapper = createEl("div", {classes:"flex flex-col items-center mb-6"});
+    const img = createEl("img", {attrs:{src: currentUser.profilePic, alt:"Foto profil admin dengan latar belakang biru dan wajah pria dewasa tersenyum mengenakan kemeja putih"}, classes:"rounded-full w-32 h-32 object-cover mb-3"});
+    imgWrapper.appendChild(img);
+
+    const fileInputLabel = createEl("label", {text:"Ubah Foto Profil:", classes:"block mb-2 font-medium text-gray-700"});
+    const fileInput = createEl("input", {attrs:{type:"file", accept:"image/*"}, classes:"block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"});
+    imgWrapper.appendChild(fileInputLabel);
+    imgWrapper.appendChild(fileInput);
+
+    container.appendChild(imgWrapper);
+
+    const saveBtn = createEl("button", {text:"Simpan", classes:"bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-md transition"});
+    container.appendChild(saveBtn);
+
+    adminMainContent.appendChild(container);
+
+    fileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    saveBtn.addEventListener("click", () => {
+      if (img.src) {
+        currentUser.profilePic = img.src;
+        adminProfilePic.src = img.src;
+        alert("Foto profil berhasil disimpan.");
+      }
+    });
+  }
+
+  // Admin Daftar Hadir Siswa
+  function renderAdminDaftarHadir() {
+    const container = createEl("div", {classes:"max-w-full mx-auto bg-white p-4 rounded-lg shadow-md"});
+    const title = createEl("h2", {text:"Daftar Hadir Siswa", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    // Date display and controls
+    const dateWrapper = createEl("div", {classes:"flex flex-wrap items-center gap-4 mb-4"});
+    const dateLabel = createEl("label", {text:"Pilih Tanggal:", classes:"font-medium text-gray-700"});
+    const dateInput = createEl("input", {attrs:{type:"date"}, classes:"border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"});
+    // Set default date to today
+    const today = new Date();
+    dateInput.value = formatDate(today);
+    dateWrapper.appendChild(dateLabel);
+    dateWrapper.appendChild(dateInput);
+    container.appendChild(dateWrapper);
+
+    // Tabs for kelas
+    const kelasTabsWrapper = createEl("div", {classes:"flex flex-wrap gap-2 mb-4"});
+    Object.keys(siswaData).forEach(kelas => {
+      const btn = createEl("button", {text: kelas, classes:"px-4 py-2 rounded-md border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white transition"});
+      btn.dataset.kelas = kelas;
+      kelasTabsWrapper.appendChild(btn);
+    });
+    container.appendChild(kelasTabsWrapper);
+
+    // Attendance table container
+    const tableWrapper = createEl("div", {classes:"overflow-x-auto max-h-[600px] border border-gray-300 rounded-md"});
+    container.appendChild(tableWrapper);
+
+    // Save button
+    const saveBtn = createEl("button", {text:"Simpan", classes:"mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-md transition"});
+    container.appendChild(saveBtn);
+
+    adminMainContent.appendChild(container);
+
+    // State
+    let selectedKelas = Object.keys(siswaData)[0];
+    let selectedDate = dateInput.value;
+
+    // Render attendance table for kelas and date
+    function renderAttendanceTable(kelas, date) {
+      tableWrapper.innerHTML = "";
+      const siswaList = siswaData[kelas];
+      const table = createEl("table", {classes:"min-w-full border-collapse"});
+      const thead = createEl("thead", {classes:"bg-indigo-100 sticky top-0"});
+      const trHead = createEl("tr");
+      ["No", "Nama Siswa", "Alpa", "Izin", "Sakit", "Hadir"].forEach(text => {
+        const th = createEl("th", {text, classes:"border border-gray-300 px-3 py-2 text-center font-semibold text-indigo-700"});
+        trHead.appendChild(th);
+      });
+      thead.appendChild(trHead);
+      table.appendChild(thead);
+
+      const tbody = createEl("tbody");
+      siswaList.forEach((nama, i) => {
+        const tr = createEl("tr", {classes: i % 2 === 0 ? "bg-white" : "bg-indigo-50"});
+        // No
+        const tdNo = createEl("td", {text: (i+1).toString(), classes:"border border-gray-300 px-2 py-1 text-center"});
+        tr.appendChild(tdNo);
+        // Nama
+        const tdNama = createEl("td", {text: nama, classes:"border border-gray-300 px-3 py-1"});
+        tr.appendChild(tdNama);
+
+        // Attendance radios
+        ["alpa", "izin", "sakit", "hadir"].forEach(status => {
+          const td = createEl("td", {classes:"border border-gray-300 px-2 py-1 text-center"});
+          const input = createEl("input", {attrs:{type:"radio", name:`att-${kelas}-${nama}-${date}`, value:status}});
+          // Check if saved
+          if (currentUser.attendance[date] && currentUser.attendance[date][nama] === status) {
+            input.checked = true;
+          }
+          td.appendChild(input);
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      tableWrapper.appendChild(table);
+    }
+
+    // Initial render
+    renderAttendanceTable(selectedKelas, selectedDate);
+
+    // Kelas tab click
+    kelasTabsWrapper.querySelectorAll("button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectedKelas = btn.dataset.kelas;
+        // Highlight active kelas
+        kelasTabsWrapper.querySelectorAll("button").forEach(b => b.classList.remove("bg-indigo-600", "text-white"));
+        btn.classList.add("bg-indigo-600", "text-white");
+        renderAttendanceTable(selectedKelas, selectedDate);
+      });
+    });
+    // Highlight first kelas by default
+    kelasTabsWrapper.querySelector("button").classList.add("bg-indigo-600", "text-white");
+
+    // Date change
+    dateInput.addEventListener("change", () => {
+      selectedDate = dateInput.value;
+      renderAttendanceTable(selectedKelas, selectedDate);
+    });
+
+    // Save button click
+    saveBtn.addEventListener("click", () => {
+      // Collect attendance data for selectedDate
+      if (!currentUser.attendance[selectedDate]) currentUser.attendance[selectedDate] = {};
+      const radios = tableWrapper.querySelectorAll("input[type=radio]:checked");
+      radios.forEach(radio => {
+        // name format: att-kelas-nama-date
+        const parts = radio.name.split("-");
+        const nama = parts.slice(2, parts.length - 1).join("-");
+        currentUser.attendance[selectedDate][nama] = radio.value;
+      });
+      alert("Data absensi berhasil disimpan untuk tanggal " + selectedDate);
+    });
+  }
+
+  // Admin Penugasan
+  function renderAdminPenugasan() {
+    const container = createEl("div", {classes:"max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md flex flex-col gap-6"});
+    const title = createEl("h2", {text:"Penugasan", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    // Form to add new penugasan
+    const form = createEl("form", {classes:"flex flex-col gap-4"});
+    const titleInputLabel = createEl("label", {text:"Judul Penugasan:", classes:"font-medium text-gray-700"});
+    const titleInput = createEl("input", {attrs:{type:"text", required:true, placeholder:"Judul penugasan"}, classes:"border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"});
+    const descInputLabel = createEl("label", {text:"Deskripsi Penugasan:", classes:"font-medium text-gray-700"});
+    const descInput = createEl("textarea", {attrs:{rows:"3", placeholder:"Deskripsi penugasan"}, classes:"border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"});
+    const fileInputLabel = createEl("label", {text:"Upload File (foto, word, pdf, excel):", classes:"font-medium text-gray-700"});
+    const fileInput = createEl("input", {attrs:{type:"file", multiple:true, accept:".png,.jpg,.jpeg,.gif,.bmp,.pdf,.doc,.docx,.xls,.xlsx"}, classes:"block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"});
+    const submitBtn = createEl("button", {text:"Tambah Penugasan", classes:"bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-md transition self-start"});
+    form.append(titleInputLabel, titleInput, descInputLabel, descInput, fileInputLabel, fileInput, submitBtn);
+    container.appendChild(form);
+
+    // List penugasan
+    const listWrapper = createEl("div", {classes:"mt-6 overflow-y-auto max-h-[400px]"});
+    container.appendChild(listWrapper);
+
+    adminMainContent.appendChild(container);
+
+    // Render penugasan list
+    function renderPenugasanList() {
+      listWrapper.innerHTML = "";
+      if (currentUser.assignments.length === 0) {
+        const emptyMsg = createEl("p", {text:"Belum ada penugasan.", classes:"text-gray-600"});
+        listWrapper.appendChild(emptyMsg);
+        return;
+      }
+      currentUser.assignments.forEach((asg, idx) => {
+        const card = createEl("div", {classes:"border border-gray-300 rounded-md p-4 mb-4 bg-indigo-50"});
+        const header = createEl("div", {classes:"flex justify-between items-center mb-2"});
+        const title = createEl("h3", {text: asg.title, classes:"font-semibold text-indigo-700 text-lg"});
+        const delBtn = createEl("button", {html:'<i class="fas fa-trash-alt"></i>', classes:"text-red-600 hover:text-red-800 transition"});
+        header.append(title, delBtn);
+        card.appendChild(header);
+        const desc = createEl("p", {text: asg.description || "-", classes:"mb-2 text-gray-700"});
+        card.appendChild(desc);
+        if (asg.files.length > 0) {
+          const filesList = createEl("ul", {classes:"list-disc list-inside text-sm text-gray-600"});
+          asg.files.forEach(f => {
+            const li = createEl("li");
+            const a = createEl("a", {text: f.name, attrs:{href: f.url, target:"_blank", rel:"noopener noreferrer"}, classes:"underline hover:text-indigo-700"});
+            li.appendChild(a);
+            filesList.appendChild(li);
+          });
+          card.appendChild(filesList);
+        } else {
+          const noFiles = createEl("p", {text:"Tidak ada file terlampir.", classes:"text-gray-500 text-sm italic"});
+          card.appendChild(noFiles);
+        }
+        listWrapper.appendChild(card);
+
+        delBtn.addEventListener("click", () => {
+          if (confirm(`Hapus penugasan "${asg.title}"?`)) {
+            currentUser.assignments.splice(idx, 1);
+            renderPenugasanList();
+          }
+        });
+      });
+    }
+
+    renderPenugasanList();
+
+    // Handle form submit
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const titleVal = titleInput.value.trim();
+      if (!titleVal) {
+        alert("Judul penugasan wajib diisi.");
+        return;
+      }
+      const descVal = descInput.value.trim();
+      const files = [];
+      if (fileInput.files.length > 0) {
+        for (let i=0; i<fileInput.files.length; i++) {
+          const file = fileInput.files[i];
+          // Create object URL for preview/download
+          const url = URL.createObjectURL(file);
+          files.push({name: file.name, url});
+        }
+      }
+      const newAsg = {
+        id: Date.now().toString(),
+        title: titleVal,
+        description: descVal,
+        files,
+        submissions: {} // username: {files:[], submittedAt}
+      };
+      currentUser.assignments.push(newAsg);
+      titleInput.value = "";
+      descInput.value = "";
+      fileInput.value = "";
+      renderPenugasanList();
+      alert("Penugasan berhasil ditambahkan.");
+    });
+  }
+
+  // Admin Pengecekan Penilaian Penugasan
+  function renderAdminPenilaianPenugasan() {
+    const container = createEl("div", {classes:"max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md"});
+    const title = createEl("h2", {text:"Pengecekan Penilaian Penugasan", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    if (currentUser.assignments.length === 0) {
+      const emptyMsg = createEl("p", {text:"Belum ada penugasan yang dibuat.", classes:"text-gray-600"});
+      container.appendChild(emptyMsg);
+      adminMainContent.appendChild(container);
+      return;
+    }
+
+    // Select penugasan
+    const selectLabel = createEl("label", {text:"Pilih Penugasan:", classes:"font-medium text-gray-700"});
+    const select = createEl("select", {classes:"border border-gray-300 rounded-md px-3 py-2 mb-4 w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"});
+    currentUser.assignments.forEach(asg => {
+      const option = createEl("option", {text: asg.title, attrs:{value: asg.id}});
+      select.appendChild(option);
+    });
+    container.appendChild(selectLabel);
+    container.appendChild(select);
+
+    // Table container
+    const tableWrapper = createEl("div", {classes:"overflow-x-auto max-h-[400px] border border-gray-300 rounded-md"});
+    container.appendChild(tableWrapper);
+
+    // Save button
+    const saveBtn = createEl("button", {text:"Simpan", classes:"mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-md transition"});
+    container.appendChild(saveBtn);
+
+    adminMainContent.appendChild(container);
+
+    // Render table for selected penugasan
+    function renderTable(assignmentId) {
+      tableWrapper.innerHTML = "";
+      const asg = currentUser.assignments.find(a => a.id === assignmentId);
+      if (!asg) return;
+      const table = createEl("table", {classes:"min-w-full border-collapse"});
+      const thead = createEl("thead", {classes:"bg-indigo-100 sticky top-0"});
+      const trHead = createEl("tr");
+      ["No", "Nama Siswa", "Kelas", "Nilai"].forEach(text => {
+        const th = createEl("th", {text, classes:"border border-gray-300 px-3 py-2 text-center font-semibold text-indigo-700"});
+        trHead.appendChild(th);
+      });
+      thead.appendChild(trHead);
+      table.appendChild(thead);
+
+      const tbody = createEl("tbody");
+      // For all siswa, show if submitted or not, and input nilai
+      Object.keys(users).forEach(username => {
+        const user = users[username];
+        if (!user.kelas) return; // skip admin
+        const tr = createEl("tr", {classes: "bg-white"});
+        // No
+        const tdNo = createEl("td", {text: (tbody.children.length + 1).toString(), classes:"border border-gray-300 px-2 py-1 text-center"});
+        tr.appendChild(tdNo);
+        // Nama
+        const tdNama = createEl("td", {text: user.username, classes:"border border-gray-300 px-3 py-1"});
+        tr.appendChild(tdNama);
+        // Kelas
+        const tdKelas = createEl("td", {text: user.kelas, classes:"border border-gray-300 px-3 py-1 text-center"});
+        tr.appendChild(tdKelas);
+        // Nilai input
+        const tdNilai = createEl("td", {classes:"border border-gray-300 px-3 py-1 text-center"});
+        const inputNilai = createEl("input", {attrs:{type:"number", min:"0", max:"100", step:"1"}, classes:"w-20 border border-gray-300 rounded-md px-2 py-1 text-center"});
+        // Load saved nilai if any
+        if (currentUser.penilaianPenugasan[assignmentId] && currentUser.penilaianPenugasan[assignmentId][user.username]) {
+          inputNilai.value = currentUser.penilaianPenugasan[assignmentId][user.username];
+        }
+        tdNilai.appendChild(inputNilai);
+        tr.appendChild(tdNilai);
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      tableWrapper.appendChild(table);
+
+      // Save button handler
+      saveBtn.onclick = () => {
+        if (!currentUser.penilaianPenugasan[assignmentId]) currentUser.penilaianPenugasan[assignmentId] = {};
+        tbody.querySelectorAll("tr").forEach(tr => {
+          const nama = tr.children[1].textContent;
+          const nilaiInput = tr.children[3].querySelector("input");
+          let nilai = parseInt(nilaiInput.value);
+          if (isNaN(nilai) || nilai < 0) nilai = 0;
+          if (nilai > 100) nilai = 100;
+          currentUser.penilaianPenugasan[assignmentId][nama] = nilai;
+        });
+        alert("Nilai penugasan berhasil disimpan.");
+      };
+    }
+
+    // Initial render
+    renderTable(select.value);
+
+    select.addEventListener("change", () => {
+      renderTable(select.value);
+    });
+  }
+
+  // Admin Pengecekan Daftar Hadir
+  function renderAdminPengecekanDaftarHadir() {
+    const container = createEl("div", {classes:"max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md"});
+    const title = createEl("h2", {text:"Pengecekan Daftar Hadir (6 Bulan Terakhir)", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    // Table container
+    const tableWrapper = createEl("div", {classes:"overflow-x-auto max-h-[600px] border border-gray-300 rounded-md"});
+    container.appendChild(tableWrapper);
+
+    // Download button
+    const downloadBtn = createEl("button", {text:"Unduh Data (CSV)", classes:"mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-md transition"});
+    container.appendChild(downloadBtn);
+
+    adminMainContent.appendChild(container);
+
+    // Calculate date 6 months ago
+    const today = new Date();
+    const sixMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 6, today.getDate());
+
+    // Collect all dates in last 6 months with attendance data
+    const attendanceDates = Object.keys(currentUser.attendance).filter(d => {
+      const dt = new Date(d);
+      return dt >= sixMonthsAgo && dt <= today;
+    }).sort();
+
+    // For each siswa, count alpa, izin, sakit
+    const siswaList = [];
+    Object.keys(users).forEach(username => {
+      const user = users[username];
+      if (!user.kelas) return;
+      siswaList.push(user.username);
+    });
+
+    // Build data summary
+    const summary = {};
+    siswaList.forEach(nama => {
+      summary[nama] = {alpa:0, izin:0, sakit:0};
+      attendanceDates.forEach(date => {
+        if (currentUser.attendance[date] && currentUser.attendance[date][nama]) {
+          const status = currentUser.attendance[date][nama];
+          if (status === "alpa") summary[nama].alpa++;
+          else if (status === "izin") summary[nama].izin++;
+          else if (status === "sakit") summary[nama].sakit++;
+        }
+      });
+    });
+
+    // Render table
+    const table = createEl("table", {classes:"min-w-full border-collapse"});
+    const thead = createEl("thead", {classes:"bg-indigo-100 sticky top-0"});
+    const trHead = createEl("tr");
+    ["No", "Nama Siswa", "Jumlah Alpa", "Jumlah Izin", "Jumlah Sakit"].forEach(text => {
+      const th = createEl("th", {text, classes:"border border-gray-300 px-3 py-2 text-center font-semibold text-indigo-700"});
+      trHead.appendChild(th);
+    });
+    thead.appendChild(trHead);
+    table.appendChild(thead);
+
+    const tbody = createEl("tbody");
+    siswaList.forEach((nama, i) => {
+      const tr = createEl("tr", {classes: i % 2 === 0 ? "bg-white" : "bg-indigo-50"});
+      const tdNo = createEl("td", {text: (i+1).toString(), classes:"border border-gray-300 px-2 py-1 text-center"});
+      const tdNama = createEl("td", {text: nama, classes:"border border-gray-300 px-3 py-1"});
+      const tdAlpa = createEl("td", {text: summary[nama].alpa.toString(), classes:"border border-gray-300 px-3 py-1 text-center"});
+      const tdIzin = createEl("td", {text: summary[nama].izin.toString(), classes:"border border-gray-300 px-3 py-1 text-center"});
+      const tdSakit = createEl("td", {text: summary[nama].sakit.toString(), classes:"border border-gray-300 px-3 py-1 text-center"});
+      tr.append(tdNo, tdNama, tdAlpa, tdIzin, tdSakit);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    tableWrapper.appendChild(table);
+
+    // Download CSV
+    downloadBtn.addEventListener("click", () => {
+      let csv = "No,Nama Siswa,Jumlah Alpa,Jumlah Izin,Jumlah Sakit\n";
+      siswaList.forEach((nama, i) => {
+        csv += `${i+1},"${nama}",${summary[nama].alpa},${summary[nama].izin},${summary[nama].sakit}\n`;
+      });
+      const blob = new Blob([csv], {type: "text/csv"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "daftar_hadir_6_bulan.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // Admin Ulangan Harian
+  function renderAdminUlanganHarian() {
+    const container = createEl("div", {classes:"max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md flex flex-col gap-6"});
+    const title = createEl("h2", {text:"Ulangan Harian", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    // Buttons: Tambah Soal, Hapus Semua Soal, Simpan
+    const btnWrapper = createEl("div", {classes:"flex flex-wrap gap-4 mb-4"});
+    const tambahSoalBtn = createEl("button", {text:"Tambah Soal", classes:"bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-md transition"});
+    const hapusSoalBtn = createEl("button", {text:"Hapus Semua Soal", classes:"bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md transition"});
+    const simpanBtn = createEl("button", {text:"Simpan", classes:"bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md transition"});
+    btnWrapper.append(tambahSoalBtn, hapusSoalBtn, simpanBtn);
+    container.appendChild(btnWrapper);
+
+    // Soal list container
+    const soalListWrapper = createEl("div", {classes:"overflow-y-auto max-h-[600px] border border-gray-300 rounded-md p-4 space-y-6"});
+    container.appendChild(soalListWrapper);
+
+    adminMainContent.appendChild(container);
+
+    // Render soal list
+    function renderSoalList() {
+      soalListWrapper.innerHTML = "";
+      if (currentUser.ulanganHarian.length === 0) {
+        const emptyMsg = createEl("p", {text:"Belum ada soal ulangan harian.", classes:"text-gray-600"});
+        soalListWrapper.appendChild(emptyMsg);
+        return;
+      }
+      currentUser.ulanganHarian.forEach((soal, idx) => {
+        const card = createEl("div", {classes:"border border-gray-300 rounded-md p-4 bg-indigo-50 relative"});
+        const nomor = createEl("h3", {text:`Soal ${idx+1}`, classes:"font-semibold text-indigo-700 mb-2"});
+        card.appendChild(nomor);
+
+        // Soal text
+        const soalLabel = createEl("label", {text:"Pertanyaan:", classes:"block font-medium text-gray-700 mb-1"});
+        const soalInput = createEl("textarea", {attrs:{rows:"2"}, classes:"w-full border border-gray-300 rounded-md px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"});
+        soalInput.value = soal.question;
+        card.append(soalLabel, soalInput);
+
+        // Pilihan a-e
+        ["a","b","c","d","e"].forEach(opt => {
+          const optLabel = createEl("label", {text:`Pilihan ${opt.toUpperCase()}:`, classes:"block font-medium text-gray-700 mb-1"});
+          const optInput = createEl("input", {attrs:{type:"text"}, classes:"w-full border border-gray-300 rounded-md px-3 py-1 mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"});
+          optInput.value = soal.options[opt] || "";
+          card.append(optLabel, optInput);
+          // Save input references for later
+          soal[`inputOpt${opt.toUpperCase()}`] = optInput;
+        });
+
+        // Jawaban benar
+        const jawabanLabel = createEl("label", {text:"Jawaban Benar (a/b/c/d/e):", classes:"block font-medium text-gray-700 mb-1"});
+        const jawabanInput = createEl("input", {attrs:{type:"text", maxlength:"1", pattern:"[abcdeABCDE]"}, classes:"w-20 border border-gray-300 rounded-md px-3 py-1 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"});
+        jawabanInput.value = soal.answer;
+        card.append(jawabanLabel, jawabanInput);
+
+        // Skor
+        const skorLabel = createEl("label", {text:"Skor:", classes:"block font-medium text-gray-700 mb-1"});
+        const skorInput = createEl("input", {attrs:{type:"number", min:"0", max:"100", step:"1"}, classes:"w-20 border border-gray-300 rounded-md px-3 py-1 mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"});
+        skorInput.value = soal.score;
+        card.append(skorLabel, skorInput);
+
+        // Delete button top right
+        const delBtn = createEl("button", {html:'<i class="fas fa-trash-alt"></i>', classes:"absolute top-2 right-2 text-red-600 hover:text-red-800 transition"});
+        card.appendChild(delBtn);
+
+        soalListWrapper.appendChild(card);
+
+        // Save input references for later
+        soal.soalInput = soalInput;
+        soal.jawabanInput = jawabanInput;
+        soal.skorInput = skorInput;
+
+        delBtn.addEventListener("click", () => {
+          if (confirm(`Hapus soal nomor ${idx+1}?`)) {
+            currentUser.ulanganHarian.splice(idx, 1);
+            renderSoalList();
+          }
+        });
+      });
+    }
+
+    renderSoalList();
+
+    tambahSoalBtn.addEventListener("click", () => {
+      if (currentUser.ulanganHarian.length >= 50) {
+        alert("Maksimal 50 soal.");
+        return;
+      }
+      currentUser.ulanganHarian.push({
+        id: Date.now().toString(),
+        question: "",
+        options: {a:"",b:"",c:"",d:"",e:""},
+        answer: "",
+        score: 0
+      });
+      renderSoalList();
+    });
+
+    hapusSoalBtn.addEventListener("click", () => {
+      if (confirm("Hapus semua soal ulangan harian?")) {
+        currentUser.ulanganHarian = [];
+        renderSoalList();
+      }
+    });
+
+    simpanBtn.addEventListener("click", () => {
+      // Save all soal inputs
+      let valid = true;
+      currentUser.ulanganHarian.forEach((soal, idx) => {
+        soal.question = soal.soalInput.value.trim();
+        soal.options.a = soal.inputOptA.value.trim();
+        soal.options.b = soal.inputOptB.value.trim();
+        soal.options.c = soal.inputOptC.value.trim();
+        soal.options.d = soal.inputOptD.value.trim();
+        soal.options.e = soal.inputOptE.value.trim();
+        soal.answer = soal.jawabanInput.value.trim().toLowerCase();
+        soal.score = parseInt(soal.skorInput.value);
+        if (!soal.question) {
+          alert(`Soal nomor ${idx+1} belum diisi pertanyaannya.`);
+          valid = false;
+          return;
+        }
+        if (!["a","b","c","d","e"].includes(soal.answer)) {
+          alert(`Soal nomor ${idx+1} jawaban benar harus salah satu dari a,b,c,d,e.`);
+          valid = false;
+          return;
+        }
+        if (isNaN(soal.score) || soal.score < 0) soal.score = 0;
+      });
+      if (!valid) return;
+      alert("Soal ulangan harian berhasil disimpan.");
+    });
+  }
+
+  // Admin Nilai Penugasan
+  function renderAdminNilaiPenugasan() {
+    const container = createEl("div", {classes:"max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md"});
+    const title = createEl("h2", {text:"Nilai Penugasan", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    if (currentUser.assignments.length === 0) {
+      const emptyMsg = createEl("p", {text:"Belum ada penugasan yang dibuat.", classes:"text-gray-600"});
+      container.appendChild(emptyMsg);
+      adminMainContent.appendChild(container);
+      return;
+    }
+
+    // Select penugasan
+    const selectLabel = createEl("label", {text:"Pilih Penugasan:", classes:"font-medium text-gray-700"});
+    const select = createEl("select", {classes:"border border-gray-300 rounded-md px-3 py-2 mb-4 w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"});
+    currentUser.assignments.forEach(asg => {
+      const option = createEl("option", {text: asg.title, attrs:{value: asg.id}});
+      select.appendChild(option);
+    });
+    container.appendChild(selectLabel);
+    container.appendChild(select);
+
+    // Table container
+    const tableWrapper = createEl("div", {classes:"overflow-x-auto max-h-[400px] border border-gray-300 rounded-md"});
+    container.appendChild(tableWrapper);
+
+    // Save button
+    const saveBtn = createEl("button", {text:"Simpan", classes:"mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-md transition"});
+    container.appendChild(saveBtn);
+
+    adminMainContent.appendChild(container);
+
+    // Render table for selected penugasan
+    function renderTable(assignmentId) {
+      tableWrapper.innerHTML = "";
+      const asg = currentUser.assignments.find(a => a.id === assignmentId);
+      if (!asg) return;
+      const table = createEl("table", {classes:"min-w-full border-collapse"});
+      const thead = createEl("thead", {classes:"bg-indigo-100 sticky top-0"});
+      const trHead = createEl("tr");
+      ["No", "Nama Siswa", "Kelas", "Nilai Penugasan"].forEach(text => {
+        const th = createEl("th", {text, classes:"border border-gray-300 px-3 py-2 text-center font-semibold text-indigo-700"});
+        trHead.appendChild(th);
+      });
+      thead.appendChild(trHead);
+      table.appendChild(thead);
+
+      const tbody = createEl("tbody");
+      Object.keys(users).forEach(username => {
+        const user = users[username];
+        if (!user.kelas) return;
+        const tr = createEl("tr", {classes: "bg-white"});
+        const tdNo = createEl("td", {text: (tbody.children.length + 1).toString(), classes:"border border-gray-300 px-2 py-1 text-center"});
+        const tdNama = createEl("td", {text: user.username, classes:"border border-gray-300 px-3 py-1"});
+        const tdKelas = createEl("td", {text: user.kelas, classes:"border border-gray-300 px-3 py-1 text-center"});
+        const tdNilai = createEl("td", {text: (currentUser.nilaiPenugasan[user.username] && currentUser.nilaiPenugasan[user.username][assignmentId]) || "0", classes:"border border-gray-300 px-3 py-1 text-center"});
+        tr.append(tdNo, tdNama, tdKelas, tdNilai);
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      tableWrapper.appendChild(table);
+
+      saveBtn.onclick = () => {
+        alert("Fitur simpan nilai penugasan belum diimplementasikan.");
+      };
+    }
+
+    renderTable(select.value);
+
+    select.addEventListener("change", () => {
+      renderTable(select.value);
+    });
+  }
+
+  // Admin Jumlah Nilai (rata-rata nilai penugasan dan ulangan harian)
+  function renderAdminJumlahNilai() {
+    const container = createEl("div", {classes:"max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md"});
+    const title = createEl("h2", {text:"Jumlah Nilai", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    // Table container
+    const tableWrapper = createEl("div", {classes:"overflow-x-auto max-h-[600px] border border-gray-300 rounded-md"});
+    container.appendChild(tableWrapper);
+
+    // Download button
+    const downloadBtn = createEl("button", {text:"Unduh Jumlah Nilai (CSV)", classes:"mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-md transition"});
+    container.appendChild(downloadBtn);
+
+    adminMainContent.appendChild(container);
+
+    // Calculate nilai rata-rata
+    const siswaList = [];
+    Object.keys(users).forEach(username => {
+      const user = users[username];
+      if (!user.kelas) return;
+      siswaList.push(user.username);
+    });
+
+    // For each siswa, calculate average nilai penugasan and ulangan harian
+    const nilaiData = {};
+    siswaList.forEach(nama => {
+      // Penugasan average
+      let penugasanTotal = 0;
+      let penugasanCount = 0;
+      if (currentUser.penilaianPenugasan) {
+        for (const asgId in currentUser.penilaianPenugasan) {
+          if (currentUser.penilaianPenugasan[asgId][nama] !== undefined) {
+            penugasanTotal += currentUser.penilaianPenugasan[asgId][nama];
+            penugasanCount++;
+          }
+        }
+      }
+      const penugasanAvg = penugasanCount > 0 ? penugasanTotal / penugasanCount : 0;
+
+      // Ulangan harian average
+      let ulanganTotal = 0;
+      let ulanganCount = 0;
+      if (users[nama.toLowerCase()].ulanganHarianAnswers) {
+        for (const ulanganId in users[nama.toLowerCase()].ulanganHarianAnswers) {
+          const score = users[nama.toLowerCase()].ulanganHarianAnswers[ulanganId].score;
+          if (score !== undefined) {
+            ulanganTotal += score;
+            ulanganCount++;
+          }
+        }
+      }
+      const ulanganAvg = ulanganCount > 0 ? ulanganTotal / ulanganCount : 0;
+
+      // Total rata-rata
+      const totalAvg = (penugasanAvg + ulanganAvg) / ( (penugasanCount > 0 ? 1 : 0) + (ulanganCount > 0 ? 1 : 0) );
+      nilaiData[nama] = {
+        penugasanAvg: penugasanAvg.toFixed(2),
+        ulanganAvg: ulanganAvg.toFixed(2),
+        totalAvg: isNaN(totalAvg) ? "0.00" : totalAvg.toFixed(2)
+      };
+    });
+
+    // Render table
+    const table = createEl("table", {classes:"min-w-full border-collapse"});
+    const thead = createEl("thead", {classes:"bg-indigo-100 sticky top-0"});
+    const trHead = createEl("tr");
+    ["No", "Nama Siswa", "Rata-rata Nilai Penugasan", "Rata-rata Nilai Ulangan Harian", "Total Rata-rata Nilai"].forEach(text => {
+      const th = createEl("th", {text, classes:"border border-gray-300 px-3 py-2 text-center font-semibold text-indigo-700"});
+      trHead.appendChild(th);
+    });
+    thead.appendChild(trHead);
+    table.appendChild(thead);
+
+    const tbody = createEl("tbody");
+    siswaList.forEach((nama, i) => {
+      const tr = createEl("tr", {classes: i % 2 === 0 ? "bg-white" : "bg-indigo-50"});
+      const tdNo = createEl("td", {text: (i+1).toString(), classes:"border border-gray-300 px-2 py-1 text-center"});
+      const tdNama = createEl("td", {text: nama, classes:"border border-gray-300 px-3 py-1"});
+      const tdPenugasan = createEl("td", {text: nilaiData[nama].penugasanAvg, classes:"border border-gray-300 px-3 py-1 text-center"});
+      const tdUlangan = createEl("td", {text: nilaiData[nama].ulanganAvg, classes:"border border-gray-300 px-3 py-1 text-center"});
+      const tdTotal = createEl("td", {text: nilaiData[nama].totalAvg, classes:"border border-gray-300 px-3 py-1 text-center"});
+      tr.append(tdNo, tdNama, tdPenugasan, tdUlangan, tdTotal);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    tableWrapper.appendChild(table);
+
+    // Download CSV
+    downloadBtn.addEventListener("click", () => {
+      let csv = "No,Nama Siswa,Rata-rata Nilai Penugasan,Rata-rata Nilai Ulangan Harian,Total Rata-rata Nilai\n";
+      siswaList.forEach((nama, i) => {
+        csv += `${i+1},"${nama}",${nilaiData[nama].penugasanAvg},${nilaiData[nama].ulanganAvg},${nilaiData[nama].totalAvg}\n`;
+      });
+      const blob = new Blob([csv], {type: "text/csv"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "jumlah_nilai.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // ========== SISWA TABS ==========
+
+  // Siswa Profile: change profile pic
+  function renderSiswaProfile() {
+    const container = createEl("div", {classes:"max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md"});
+    const title = createEl("h2", {text:"Profil Siswa", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    const imgWrapper = createEl("div", {classes:"flex flex-col items-center mb-6"});
+    const img = createEl("img", {attrs:{src: currentUser.profilePic, alt:"Foto profil siswa dengan latar belakang biru muda dan wajah remaja tersenyum mengenakan seragam sekolah putih"}, classes:"rounded-full w-32 h-32 object-cover mb-3"});
+    imgWrapper.appendChild(img);
+
+    const fileInputLabel = createEl("label", {text:"Ubah Foto Profil:", classes:"block mb-2 font-medium text-gray-700"});
+    const fileInput = createEl("input", {attrs:{type:"file", accept:"image/*"}, classes:"block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"});
+    imgWrapper.appendChild(fileInputLabel);
+    imgWrapper.appendChild(fileInput);
+
+    container.appendChild(imgWrapper);
+
+    const saveBtn = createEl("button", {text:"Simpan", classes:"bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-md transition"});
+    container.appendChild(saveBtn);
+
+    siswaMainContent.appendChild(container);
+
+    fileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    saveBtn.addEventListener("click", () => {
+      if (img.src) {
+        currentUser.profilePic = img.src;
+        siswaProfilePic.src = img.src;
+        alert("Foto profil berhasil disimpan.");
+      }
+    });
+  }
+
+  // Siswa Penugasan: lihat penugasan dari admin dan upload file
+  function renderSiswaPenugasan() {
+    const container = createEl("div", {classes:"max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md flex flex-col gap-6"});
+    const title = createEl("h2", {text:"Penugasan", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    // List penugasan from admin
+    const listWrapper = createEl("div", {classes:"overflow-y-auto max-h-[400px] border border-gray-300 rounded-md p-4 space-y-6"});
+    container.appendChild(listWrapper);
+
+    siswaMainContent.appendChild(container);
+
+    // Get admin assignments
+    const adminAssignments = users.admin.assignments || [];
+
+    if (adminAssignments.length === 0) {
+      const emptyMsg = createEl("p", {text:"Belum ada penugasan dari admin.", classes:"text-gray-600"});
+      listWrapper.appendChild(emptyMsg);
+      return;
+    }
+
+    adminAssignments.forEach(asg => {
+      const card = createEl("div", {classes:"border border-gray-300 rounded-md p-4 bg-indigo-50"});
+      const header = createEl("div", {classes:"flex justify-between items-center mb-2"});
+      const title = createEl("h3", {text: asg.title, classes:"font-semibold text-indigo-700 text-lg"});
+      card.appendChild(title);
+      const desc = createEl("p", {text: asg.description || "-", classes:"mb-2 text-gray-700"});
+      card.appendChild(desc);
+      if (asg.files.length > 0) {
+        const filesList = createEl("ul", {classes:"list-disc list-inside text-sm text-gray-600 mb-2"});
+        asg.files.forEach(f => {
+          const li = createEl("li");
+          const a = createEl("a", {text: f.name, attrs:{href: f.url, target:"_blank", rel:"noopener noreferrer"}, classes:"underline hover:text-indigo-700"});
+          li.appendChild(a);
+          filesList.appendChild(li);
+        });
+        card.appendChild(filesList);
+      } else {
+        const noFiles = createEl("p", {text:"Tidak ada file terlampir.", classes:"text-gray-500 text-sm italic mb-2"});
+        card.appendChild(noFiles);
+      }
+
+      // Upload submission form
+      const form = createEl("form", {classes:"flex flex-col gap-2"});
+      const fileInputLabel = createEl("label", {text:"Upload File Penugasan (foto, word, pdf, excel):", classes:"font-medium text-gray-700"});
+      const fileInput = createEl("input", {attrs:{type:"file", multiple:true, accept:".png,.jpg,.jpeg,.gif,.bmp,.pdf,.doc,.docx,.xls,.xlsx"}, classes:"block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"});
+      const submitBtn = createEl("button", {text:"Kirim Penugasan", classes:"bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md transition self-start"});
+      form.append(fileInputLabel, fileInput, submitBtn);
+      card.appendChild(form);
+
+      listWrapper.appendChild(card);
+
+      // Load existing submission files if any
+      const userSubmissions = asg.submissions[currentUser.username] || null;
+      if (userSubmissions && userSubmissions.files.length > 0) {
+        const submTitle = createEl("p", {text:"File Penugasan yang sudah dikirim:", classes:"font-semibold mt-2 text-indigo-700"});
+        const submList = createEl("ul", {classes:"list-disc list-inside text-sm text-gray-600"});
+        userSubmissions.files.forEach(f => {
+          const li = createEl("li");
+          const a = createEl("a", {text: f.name, attrs:{href: f.url, target:"_blank", rel:"noopener noreferrer"}, classes:"underline hover:text-indigo-700"});
+          li.appendChild(a);
+          submList.appendChild(li);
+        });
+        card.appendChild(submTitle);
+        card.appendChild(submList);
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (fileInput.files.length === 0) {
+          alert("Pilih file untuk dikirim.");
+          return;
+        }
+        const files = [];
+        for (let i=0; i<fileInput.files.length; i++) {
+          const file = fileInput.files[i];
+          const url = URL.createObjectURL(file);
+          files.push({name: file.name, url});
+        }
+        asg.submissions[currentUser.username] = {
+          files,
+          submittedAt: new Date().toISOString()
+        };
+        alert("Penugasan berhasil dikirim.");
+        renderSiswaPenugasan();
+      });
+    });
+  }
+
+  // Siswa Ulangan Harian: tampilkan soal dan pilih jawaban
+  function renderSiswaUlanganHarian() {
+    const container = createEl("div", {classes:"max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md flex flex-col gap-6"});
+    const title = createEl("h2", {text:"Ulangan Harian", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    // List soal ulangan dari admin
+    const soalList = users.admin.ulanganHarian || [];
+
+    if (soalList.length === 0) {
+      const emptyMsg = createEl("p", {text:"Belum ada soal ulangan harian dari admin.", classes:"text-gray-600"});
+      container.appendChild(emptyMsg);
+      siswaMainContent.appendChild(container);
+      return;
+    }
+
+    // Form for ulangan
+    const form = createEl("form", {classes:"space-y-6"});
+    container.appendChild(form);
+
+    soalList.forEach((soal, idx) => {
+      const card = createEl("div", {classes:"border border-gray-300 rounded-md p-4 bg-indigo-50"});
+      const nomor = createEl("h3", {text:`Soal ${idx+1}`, classes:"font-semibold text-indigo-700 mb-2"});
+      card.appendChild(nomor);
+
+      const question = createEl("p", {text: soal.question, classes:"mb-3 text-gray-800 font-medium"});
+      card.appendChild(question);
+
+      // Options radio buttons
+      const optionsWrapper = createEl("div", {classes:"flex flex-col gap-2"});
+      ["a","b","c","d","e"].forEach(opt => {
+        const optId = `soal-${soal.id}-opt-${opt}`;
+        const label = createEl("label", {classes:"flex items-center gap-2 cursor-pointer"});
+        const input = createEl("input", {attrs:{type:"radio", name:`soal-${soal.id}`, value:opt}, classes:"cursor-pointer"});
+        // Check if user already answered
+        if (currentUser.ulanganHarianAnswers && currentUser.ulanganHarianAnswers[soal.id] && currentUser.ulanganHarianAnswers[soal.id].answer === opt) {
+          input.checked = true;
+        }
+        const span = createEl("span", {text: `${opt.toUpperCase()}. ${soal.options[opt] || ""}`});
+        label.append(input, span);
+        optionsWrapper.appendChild(label);
+      });
+      card.appendChild(optionsWrapper);
+      form.appendChild(card);
+    });
+
+    // Submit button
+    const submitBtn = createEl("button", {text:"Kirim Jawaban", classes:"bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-md transition"});
+    form.appendChild(submitBtn);
+
+    siswaMainContent.appendChild(container);
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      // Collect answers and calculate score
+      let totalScore = 0;
+      let answeredCount = 0;
+      currentUser.ulanganHarianAnswers = currentUser.ulanganHarianAnswers || {};
+      soalList.forEach(soal => {
+        const selected = form.querySelector(`input[name="soal-${soal.id}"]:checked`);
+        if (selected) {
+          const ans = selected.value;
+          const score = ans === soal.answer ? soal.score : 0;
+          currentUser.ulanganHarianAnswers[soal.id] = {answer: ans, score};
+          totalScore += score;
+          answeredCount++;
+        } else {
+          currentUser.ulanganHarianAnswers[soal.id] = {answer: null, score: 0};
+        }
+      });
+      alert(`Jawaban berhasil dikirim. Total skor: ${totalScore} dari maksimal ${soalList.reduce((a,b) => a+b.score,0)}`);
+    });
+  }
+
+  // Siswa Pengecekan Tugas (penugasan dan ulangan harian yang belum lengkap)
+  function renderSiswaPengecekanTugas() {
+    const container = createEl("div", {classes:"max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md"});
+    const title = createEl("h2", {text:"Pengecekan Tugas yang Belum Lengkap", classes:"text-2xl font-semibold mb-4 text-indigo-700"});
+    container.appendChild(title);
+
+    // Penugasan dari admin
+    const adminAssignments = users.admin.assignments || [];
+
+    // Penugasan belum lengkap
+    const penugasanBelumLengkap = adminAssignments.filter(asg => {
+      return !(asg.submissions && asg.submissions[currentUser.username]);
+    });
+
+    // Ulangan harian belum lengkap
+    const ulanganHarian = users.admin.ulanganHarian || [];
+    const ulanganBelumLengkap = ulanganHarian.filter(soal => {
+      return !(currentUser.ulanganHarianAnswers && currentUser.ulanganHarianAnswers[soal.id] && currentUser.ulanganHarianAnswers[soal.id].answer);
+    });
+
+    if (penugasanBelumLengkap.length === 0 && ulanganBelumLengkap.length === 0) {
+      const doneMsg = createEl("p", {text:"Semua tugas dan ulangan harian sudah lengkap.", classes:"text-green-700 font-semibold"});
+      container.appendChild(doneMsg);
+      siswaMainContent.appendChild(container);
+      return;
+    }
+
+    if (penugasanBelumLengkap.length > 0) {
+      const penugasanTitle = createEl("h3", {text:"Penugasan yang Belum Dikirim:", classes:"font-semibold text-indigo-700 mb-2"});
+      container.appendChild(penugasanTitle);
+      const ul = createEl("ul", {classes:"list-disc list-inside mb-4"});
+      penugasanBelumLengkap.forEach(asg => {
+        const li = createEl("li", {text: asg.title});
+        ul.appendChild(li);
+      });
+      container.appendChild(ul);
+    }
+
+    if (ulanganBelumLengkap.length > 0) {
+      const ulanganTitle = createEl("h3", {text:"Soal Ulangan Harian yang Belum Dijawab:", classes:"font-semibold text-indigo-700 mb-2"});
+      container.appendChild(ulanganTitle);
+      const ul = createEl("ul", {classes:"list-disc list-inside"});
+      ulanganBelumLengkap.forEach(soal => {
+        const li = createEl("li", {text: soal.question});
+        ul.appendChild(li);
+      });
+      container.appendChild(ul);
+    }
+
+    siswaMainContent.appendChild(container);
+  }
+
+  // Initialize app: show login page
+  showLogin();
+
+})();
+   </script>
+  </div>
+ </body>
+</html>
