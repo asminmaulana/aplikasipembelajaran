@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Firebase Storage Demo — Aplikasi Pembelajaran</title>
+  <style>
+    body{font-family:system-ui,Arial;background:#f6f9ff;color:#111;margin:16px}
+    .card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.06);max-width:900px;margin:12px auto}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    input, button, select{padding:8px;border-radius:8px;border:1px solid #d1d5db}
+    button{background:#4c6ef5;color:#fff;border:0}
+    .muted{color:#666;font-size:13px}
+    .file-list{margin-top:8px}
+    .file-item{padding:8px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+    .danger{background:#ef4444}
+    .small{font-size:13px;padding:6px 8px}
+  </style>
+</head>
+<body>
+
+  <div class="card" id="authCard">
+    <h2>Login / Register</h2>
+    <div class="row">
+      <input id="inputEmail" type="email" placeholder="Email (contoh: siswa@example.com)">
+      <input id="inputPassword" type="password" placeholder="Password (min 6)">
+      <input id="inputName" type="text" placeholder="Nama (untuk register)">
+      <button id="btnLogin">Login</button>
+      <button id="btnRegister">Register (siswa)</button>
+      <button id="btnSignOut" style="display:none">Sign out</button>
+    </div>
+    <p class="muted">Catatan: daftar user via Register akan otomatis role = siswa. Untuk admin: atur <code>ADMIN_EMAIL</code> di kode dan login pakai email itu (atau buat role di DB secara manual).</p>
+    <div id="userInfo" style="margin-top:8px"></div>
+  </div>
+
+  <div class="card" id="uploadCard" style="display:none">
+    <h2>Upload Tugas / File</h2>
+    <div class="row">
+      <label>
+        Pilih Tugas:
+        <select id="selectTugas"></select>
+      </label>
+      <input type="file" id="fileInput" />
+      <button id="btnUpload">Upload</button>
+      <span id="uploadStatus" class="muted"></span>
+    </div>
+    <div class="muted" style="margin-top:8px">Maksimum file: <strong id="maxSizeLabel">5</strong> MB (ubah di kode)</div>
+  </div>
+
+  <div class="card" id="myFilesCard" style="display:none">
+    <h3>File Saya</h3>
+    <div id="myFiles" class="file-list"></div>
+  </div>
+
+  <div class="card" id="adminFilesCard" style="display:none">
+    <h3>Semua File (Admin)</h3>
+    <div id="allFiles" class="file-list"></div>
+  </div>
+
+  <!-- Firebase SDK (compat mode untuk kemudahan) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+
+  <script>
+  /********* KONFIGURASI: GANTI DENGAN PROJECT FIRAEBSE KAMU *********/
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+  };
+  const ADMIN_EMAIL = "admin@example.com"; // ganti email adminmu di sini
+
+  // ukuran max file (MB)
+  const MAX_FILE_MB = 5;
+
+  // init
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+  const storage = firebase.storage();
+
+  /********* ELEMEN UI *********/
+  const inputEmail = document.getElementById('inputEmail');
+  const inputPassword = document.getElementById('inputPassword');
+  const inputName = document.getElementById('inputName');
+  const btnLogin = document.getElementById('btnLogin');
+  const btnRegister = document.getElementById('btnRegister');
+  const btnSignOut = document.getElementById('btnSignOut');
+  const userInfo = document.getElementById('userInfo');
+
+  const uploadCard = document.getElementById('uploadCard');
+  const selectTugas = document.getElementById('selectTugas');
+  const fileInput = document.getElementById('fileInput');
+  const btnUpload = document.getElementById('btnUpload');
+  const uploadStatus = document.getElementById('uploadStatus');
+  document.getElementById('maxSizeLabel').textContent = MAX_FILE_MB;
+
+  const myFilesCard = document.getElementById('myFilesCard');
+  const myFiles = document.getElementById('myFiles');
+
+  const adminFilesCard = document.getElementById('adminFilesCard');
+  const allFiles = document.getElementById('allFiles');
+
+  /********* AUTH HANDLERS *********/
+  btnRegister.onclick = async () => {
+    const email = inputEmail.value.trim();
+    const pass = inputPassword.value.trim();
+    const name = inputName.value.trim() || email.split('@')[0];
+    if (!email || pass.length < 6) return alert('Isi email & password (min 6).');
+    try {
+      const cred = await auth.createUserWithEmailAndPassword(email, pass);
+      // simpan profil di Realtime DB (role siswa default)
+      await db.ref('users/' + cred.user.uid).set({ email, name, role: 'siswa' });
+      alert('Akun terdaftar. Silakan login.');
+    } catch (e) { alert(e.message); }
+  };
+
+  btnLogin.onclick = async () => {
+    const email = inputEmail.value.trim();
+    const pass = inputPassword.value.trim();
+    try {
+      await auth.signInWithEmailAndPassword(email, pass);
+      // onAuthStateChanged akan handle UI
+    } catch (e) { alert(e.message); }
+  };
+
+  btnSignOut.onclick = async () => {
+    await auth.signOut();
+  };
+
+  /********* LISTEN AUTH STATE *********/
+  auth.onAuthStateChanged(async user => {
+    if (user) {
+      // tampilkan UI upload & file
+      btnSignOut.style.display = 'inline-block';
+      btnLogin.style.display = 'none';
+      btnRegister.style.display = 'none';
+      inputPassword.style.display = 'none';
+      inputName.style.display = 'none';
+
+      // ambil profile dari DB (jika ada)
+      const snap = await db.ref('users/' + user.uid).once('value');
+      const profile = snap.val() || { email: user.email, name: user.email.split('@')[0], role: 'siswa' };
+
+      userInfo.innerHTML = `<div><strong>${profile.name}</strong> (${profile.email}) — role: ${profile.role}</div>`;
+      uploadCard.style.display = 'block';
+      myFilesCard.style.display = 'block';
+
+      // jika admin: show admin panel
+      if (user.email === ADMIN_EMAIL || profile.role === 'admin') {
+        adminFilesCard.style.display = 'block';
+      } else {
+        adminFilesCard.style.display = 'none';
+      }
+
+      // render tugas (contoh: dari DB /tugas)
+      renderTugasSelect();
+
+      // start listeners for user's files
+      startUserFilesListener(user.uid);
+
+      // if admin: start listener for all files
+      if (user.email === ADMIN_EMAIL || profile.role === 'admin') {
+        startAllFilesListener();
+      } else {
+        stopAllFilesListener();
+      }
+
+    } else {
+      // not logged in
+      btnSignOut.style.display = 'none';
+      btnLogin.style.display = 'inline-block';
+      btnRegister.style.display = 'inline-block';
+      inputPassword.style.display = 'inline-block';
+      inputName.style.display = 'inline-block';
+      userInfo.innerHTML = '';
+      uploadCard.style.display = 'none';
+      myFilesCard.style.display = 'none';
+      adminFilesCard.style.display = 'none';
+      stopUserFilesListener();
+      stopAllFilesListener();
+    }
+  });
+
+  /********* TUGAS (sederhana) *********/
+  // Untuk contoh, kita isi select tugas dari DB /tugas — admin bisa tambah tugas di tempat lain
+  async function renderTugasSelect(){
+    const snap = await db.ref('tugas').once('value');
+    const data = snap.val() || {};
+    selectTugas.innerHTML = Object.keys(data).length ? 
+      Object.entries(data).map(([k,v])=>`<option value="${k}">${v.nama}</option>`).join('') :
+      '<option value="0">Tugas Umum</option>';
+  }
+
+  /********* UPLOAD FLOW *********/
+  btnUpload.onclick = async () => {
+    const file = fileInput.files?.[0];
+    const tugasId = selectTugas.value || '0';
+    const user = auth.currentUser;
+    if (!user) return alert('Silakan login.');
+    if (!file) return alert('Pilih file dulu.');
+    if (file.size > MAX_FILE_MB * 1024 * 1024) return alert('File terlalu besar.');
+
+    uploadStatus.textContent = 'Uploading...';
+    btnUpload.disabled = true;
+    try {
+      const time = Date.now();
+      const safeName = file.name.replaceAll(/\s/g,'_');
+      const path = `submissions/${tugasId}/${user.uid}_${time}_${safeName}`;
+      const ref = storage.ref(path);
+      const snap = await ref.put(file);
+      const url = await snap.ref.getDownloadURL();
+
+      // simpan metadata di DB per user & per tugas
+      const pushRef = db.ref(`submissions/${user.uid}`).push();
+      await pushRef.set({
+        tugasId,
+        filename: file.name,
+        url,
+        mime: file.type,
+        timestamp: time,
+        storagePath: path
+      });
+
+      // juga simpan index di /submissions_by_tugas/{tugasId}/{pushId} untuk admin listing (optional)
+      const idxRef = db.ref(`submissions_by_tugas/${tugasId}/${pushRef.key}`);
+      await idxRef.set({ userUid: user.uid, metaRef: `submissions/${user.uid}/${pushRef.key}` });
+
+      uploadStatus.textContent = 'Upload sukses.';
+      fileInput.value = '';
+      renderTugasSelect();
+    } catch (e) {
+      console.error(e);
+      alert('Upload gagal: ' + e.message);
+      uploadStatus.textContent = '';
+    } finally {
+      btnUpload.disabled = false;
+      setTimeout(()=> uploadStatus.textContent = '', 3000);
+    }
+  };
+
+  /********* LIST USER FILES (realtime listener) *********/
+  let userFilesListenerRef = null;
+  function startUserFilesListener(uid){
+    stopUserFilesListener();
+    userFilesListenerRef = db.ref(`submissions/${uid}`);
+    userFilesListenerRef.on('value', snap => {
+      const data = snap.val() || {};
+      renderFileListForUser(uid, data);
+    });
+  }
+  function stopUserFilesListener(){
+    if (userFilesListenerRef) { userFilesListenerRef.off(); userFilesListenerRef = null; }
+  }
+
+  function renderFileListForUser(uid, data){
+    myFiles.innerHTML = Object.keys(data).length ? 
+      Object.entries(data).map(([k,v])=> fileItemHtml(k, v, uid, false)).join('') :
+      '<div class="muted">Belum ada file.</div>';
+    // attach events (delegation)
+    myFiles.querySelectorAll('[data-action]').forEach(btn=>{
+      btn.onclick = async (e) => {
+        const action = btn.dataset.action;
+        const key = btn.dataset.key;
+        const meta = data[key];
+        if (action === 'download') {
+          window.open(meta.url, '_blank');
+        } else if (action === 'delete') {
+          if (!confirm('Hapus file ini?')) return;
+          await deleteUserFile(uid, key, meta);
+        }
+      };
+    });
+  }
+
+  /********* ADMIN: LIST ALL FILES (per tugas) *********/
+  let allFilesListenerRef = null;
+  function startAllFilesListener(){
+    stopAllFilesListener();
+    // baca semua submissions_by_tugas untuk memudahkan
+    allFilesListenerRef = db.ref(`submissions_by_tugas`);
+    allFilesListenerRef.on('value', async snap => {
+      const data = snap.val() || {};
+      // flatten to array of { tugasId, pushId, userUid, meta }
+      const promises = [];
+      Object.entries(data).forEach(([tugasId, map])=>{
+        Object.entries(map || {}).forEach(([pushId,info])=>{
+          promises.push(db.ref(info.metaRef).once('value').then(s => ({ tugasId, pushId, meta: s.val(), userUid: info.userUid })));
+        });
+      });
+      const rows = await Promise.all(promises);
+      renderAllFiles(rows);
+    });
+  }
+  function stopAllFilesListener(){
+    if (allFilesListenerRef) { allFilesListenerRef.off(); allFilesListenerRef = null; }
+    allFiles.innerHTML = '';
+  }
+
+  function renderAllFiles(rows){
+    if (!rows.length) { allFiles.innerHTML = '<div class="muted">Belum ada file dari siswa.</div>'; return; }
+    allFiles.innerHTML = rows.map(r=>{
+      const v = r.meta || {};
+      return `<div class="file-item">
+        <div><strong>${v.filename}</strong><div class="muted">oleh: ${r.userUid} — tugas: ${r.tugasId}</div></div>
+        <div>
+          <button class="small" data-key="${r.pushId}" data-uid="${r.userUid}" data-action="adm_download">Unduh</button>
+          <button class="small danger" data-key="${r.pushId}" data-uid="${r.userUid}" data-action="adm_delete">Hapus</button>
+        </div>
+      </div>`;
+    }).join('');
+    // attach admin events
+    allFiles.querySelectorAll('[data-action]').forEach(btn=>{
+      btn.onclick = async ()=>{
+        const action = btn.dataset.action;
+        const key = btn.dataset.key;
+        const uid = btn.dataset.uid;
+        const metaSnap = await db.ref(`submissions/${uid}/${key}`).once('value');
+        const meta = metaSnap.val();
+        if (!meta) return alert('Meta tidak ditemukan.');
+        if (action === 'adm_download') window.open(meta.url, '_blank');
+        if (action === 'adm_delete') {
+          if (!confirm('Hapus file ini (admin)?')) return;
+          await deleteUserFile(uid, key, meta);
+        }
+      };
+    });
+  }
+
+  /********* HELPERS: delete file (storage + db) *********/
+  async function deleteUserFile(uid, key, meta){
+    try {
+      // hapus di storage
+      if (meta.storagePath) {
+        await storage.ref(meta.storagePath).delete();
+      } else if (meta.url) {
+        // try delete by URL fallback (not recommended)
+        console.warn('Storage path missing — cannot delete storage object directly.');
+      }
+      // hapus index per user
+      await db.ref(`submissions/${uid}/${key}`).remove();
+      // hapus index_by_tugas (cari & remove)
+      const idxSnap = await db.ref(`submissions_by_tugas/${meta.tugasId}`).once('value');
+      const idxMap = idxSnap.val() || {};
+      for (const [k,v] of Object.entries(idxMap)) {
+        if (v.userUid === uid) {
+          // strategy: if metaRef ends with key then remove
+          if (v.metaRef && v.metaRef.endsWith('/' + key)) {
+            await db.ref(`submissions_by_tugas/${meta.tugasId}/${k}`).remove();
+          }
+        }
+      }
+      alert('File & metadata dihapus.');
+    } catch (e) {
+      console.error(e);
+      alert('Gagal menghapus: ' + e.message);
+    }
+  }
+
+  /********* PERMALINK buat tampilan file item user *********/
+  function fileItemHtml(key, v, uid, isAdmin){
+    const timeStr = v.timestamp ? (new Date(v.timestamp)).toLocaleString() : '';
+    return `<div class="file-item">
+      <div><strong>${v.filename}</strong><div class="muted">${timeStr}</div></div>
+      <div>
+        <button class="small" data-key="${key}" data-action="download">Unduh</button>
+        <button class="small danger" data-key="${key}" data-action="delete">Hapus</button>
+      </div>
+    </div>`;
+  }
+
+  /********* START/STOP ALL listeners default *********/
+  function stopAllFilesListener() { if (allFilesListenerRef) { allFilesListenerRef.off(); allFilesListenerRef=null; } }
+
+  /********* INISIAL: pastikan rules & auth aktif *********/
+  // Petunjuk tambahan ada di bawah (README singkat)
+  </script>
+</body>
+</html>

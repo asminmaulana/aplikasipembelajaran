@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login — APLIKASI PEMBELAJARAN ASMIN MAULANA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="login">
+  <div class="page">
+    <h1>📘 APLIKASI PEMBELAJARAN ASMIN MAULANA</h1>
+	<h2>Login</h2>
+    <div class="login-card">
+      <div class="avatar-wrap">
+        <img id="adminAvatarLogin" class="avatar" alt="Admin" />
+      </div>
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button id="btnLogin">Masuk</button>
+      <p class="hint">
+        Siswa: <code>Nama Lengkap</code> / <code>123</code>. 
+        Akun siswa dibuat di menu Database Siswa.
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 APLIKASI PEMBELAJARAN ASMIN MAULANA
+  </footer>
+  <!-- Firebase (compat mode: mudah pakai seperti v8) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+
+<script>
+  // Ganti dengan konfigurasi project Firebase mu (dari Firebase Console)
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+  };
+  // Inisialisasi
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const storage = firebase.storage();
+</script>
+  <script src="script.js"></script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+<script>
+  // Config dari Firebase Console
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+  };
+
+  // Init Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // Simpan data siswa
+  function simpanSiswa(nama, kelas) {
+    const newRef = db.ref("siswa").push();
+    newRef.set({
+      nama: nama,
+      kelas: kelas
+    });
+  }
+
+  // Ambil data siswa real-time
+  db.ref("siswa").on("value", (snapshot) => {
+    const data = snapshot.val();
+    console.log(data);
+  });
+  
+</script>
+</body>
+</html>

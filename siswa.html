@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard Siswa — APLIKASI PEMBELAJARAN ASMIN MAULANA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="siswa">
+  <header>🎒 Dashboard Siswa</header>
+  <div class="app">
+    <aside class="sidebar">
+      <h3>SISWA MENU</h3>
+      <button data-go="profilSiswa">Profil</button>
+      <button data-go="tugas">Penugasan</button>
+      <button data-go="kerjaUH1">Ulangan Harian 1</button>
+      <button data-go="kerjaUH2">Ulangan Harian 2</button>
+      <button data-go="status">Cek Status</button>
+      <button class="danger" id="btnKeluar">Keluar</button>
+    </aside>
+
+    <main class="content">
+      <section id="profilSiswa" class="section">
+        <h2>Profil Siswa</h2>
+        <div class="profile">
+          <img id="siswaAvatar" class="avatar" alt="Foto Siswa" />
+          <div>
+            <div id="siswaInfo" class="hint"></div>
+            <input type="file" id="siswaFotoInput" accept="image/*" />
+            <button id="btnSimpanFotoSiswa">Simpan Foto</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="tugas" class="section" style="display:none;"></section>
+      <section id="kerjaUH1" class="section" style="display:none;"></section>
+      <section id="kerjaUH2" class="section" style="display:none;"></section>
+      <section id="status" class="section" style="display:none;"></section>
+    </main>
+  </div>
+<!-- Firebase (compat mode: mudah pakai seperti v8) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+
+<script>
+  // Ganti dengan konfigurasi project Firebase mu (dari Firebase Console)
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+  };
+  // Inisialisasi
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const storage = firebase.storage();
+</script>
+  <script src="script.js"></script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+<script>
+  // Config dari Firebase Console
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+  };
+
+  // Init Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // Simpan data siswa
+  function simpanSiswa(nama, kelas) {
+    const newRef = db.ref("siswa").push();
+    newRef.set({
+      nama: nama,
+      kelas: kelas
+    });
+  }
+
+  // Ambil data siswa real-time
+  db.ref("siswa").on("value", (snapshot) => {
+    const data = snapshot.val();
+    console.log(data);
+  });
+</script>
+
+</body>
+</html>
